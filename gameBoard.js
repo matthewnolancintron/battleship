@@ -3,8 +3,6 @@ function gameBoard(){
      * ability to place ships
      * at specific coordinates 
      * by calling the ship factory function
-     * 
-     * 
      */
 
     /**
@@ -23,3 +21,5 @@ function gameBoard(){
      * report if all ships have been sunk
      */
 }
+
+module.exports = gameBoard;
