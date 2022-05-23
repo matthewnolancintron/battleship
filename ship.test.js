@@ -25,19 +25,31 @@
      * or records the coordinates of the missed shot
     (not implemented yet.)
 
-    not yet aware of any other ways the
-    ship instance will be used yet.
-    before testing will documents other
-    parts of the game to see if other
-    parts use or intereact with the props 
-    or methods of the ship factory function
-
-
  */
+
+/** 
+ *     number:class length
+     * 1 	Carrier 	5
+       2 	Battleship 	4
+       3 	Destroyer 	3
+       4 	Submarine 	3
+       5 	Patrol Boat 	2 
+*/
+   
+
 const ship = require('./ship');
 
-test('not sure what to test yet?',()=>{
-    expect(ship().toBe());    
+const Destroyer = ship(3);
+
+test('testing the hit method of a ship',()=>{
+    const spy = jest.spyOn(Destroyer,'hit');
+    const randomPosIRange = Math.floor(Math.random() * Destroyer.length);
+    //hit a random position that is within the range of the ships length
+    const isHit = Destroyer.hit(randomPosIRange);
+
+    expect(spy).toHaveBeenCalled();
+    expect(isHit).toBe(`marking position number ${randomPosIRange} as hit`);
+    
 });
 
 /**
