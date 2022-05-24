@@ -30,9 +30,26 @@ function ship(length) {
     }, //mark a position as hit,
 
 
-    isSunk: () => {
-      return "fake value";
+    isSunk() {
+      if(Object.values(this.positions).every((element)=> element == 'hit')){
+        return true;
+      } else{
+        return false;
+      }
+      
     }, //calculate based on ship length, and if all of it's positions are hit
   };
 }
+
+
+/** 
+ * type of ships
+ *     number:class length
+     * 1 	Carrier 	5
+       2 	Battleship 	4
+       3 	Destroyer 	3
+       4 	Submarine 	3
+       5 	Patrol Boat 	2 
+*/
+
 module.exports = ship;
