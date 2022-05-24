@@ -24,15 +24,10 @@ function ship(length) {
 
     hasBeenSunk: false, //bool
 
-    /**
-     * how to update prop values on positions
-     * from the hit method and then test
-     * that in ship.test.js
-     */
-    hit: (postionNumber) => {
-        ship.positions[postionNumber] = 'hit';
-        return positions;
-    }, //mark position as hit,
+    hit(postionNumber) {
+        this.positions[postionNumber] = 'hit';
+        return this.positions;
+    }, //mark a position as hit,
 
 
     isSunk: () => {
