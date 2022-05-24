@@ -43,12 +43,19 @@ const Destroyer = ship(3);
 
 test('testing the hit method of a ship',()=>{
     const spy = jest.spyOn(Destroyer,'hit');
-    const randomPosIRange = Math.floor(Math.random() * Destroyer.length);
+    const randomPosInRange = Math.floor(Math.random() * Destroyer.length);
     //hit a random position that is within the range of the ships length
-    const isHit = Destroyer.hit(randomPosIRange);
+    const isHit = Destroyer.hit(randomPosInRange);
+    
+    let expectedValue = Object.fromEntries(Array.from(Array(Destroyer.length).keys(), x => [x,'notHit']))
+    for (const key in expectedValue) {
+      if(key==randomPosInRange){
+        expectedValue[key] = 'hit'
+      }
+    }
 
     expect(spy).toHaveBeenCalled();
-    expect(isHit).toBe(`marking position number ${randomPosIRange} as hit`);
+    expect(isHit).toStrictEqual(expectedValue);
     
 });
 
