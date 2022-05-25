@@ -11,7 +11,7 @@ function gameBoard() {
      * will contain a refrenece to the
      * ship.
      */
-    coordinates: Object.fromEntries(
+    coordinatesOfMyShips: Object.fromEntries(
       ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
         .map((letter) =>
           Array.from(Array(10).keys(), (x) => [
@@ -21,6 +21,19 @@ function gameBoard() {
         )
         .flat(1)
     ),
+
+    coordinatesOfEnemyShips: Object.fromEntries(
+        ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
+          .map((letter) =>
+            Array.from(Array(10).keys(), (x) => [
+              `${letter}${x + 1}`,
+              "unoccupied",
+            ])
+          )
+          .flat(1)
+      ),
+
+
 
     /**
      * ability to place ships
@@ -169,7 +182,7 @@ function gameBoard() {
     /**
     * report if all ships have been sunk
     */
-    allShipsSunk(){
+    reportIfAllShipsSunk(){
         /**
          * could look through the coordiantes that
          * contain the players ships and find all ships
