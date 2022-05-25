@@ -170,7 +170,20 @@ function gameBoard() {
     * report if all ships have been sunk
     */
     allShipsSunk(){
-        //
+        /**
+         * could look through the coordiantes that
+         * contain the players ships and find all ships
+         * on that grid and check if each ship found
+         * is sunk or not by checking it's prop hasBeenSunk
+         * or create a key on the gameBoard that contains
+         * all ships placed and just call a . every or some
+         * other array method to see if all element in it
+         * pass the condtion of hasBeenSunk = false
+         * if(this.shipsArray.every((x)=>{x.hasBeenSunk == false})){
+         *  all ships have been sunk game over...
+         * report...?
+         * }
+         */
     },
   };
 }
