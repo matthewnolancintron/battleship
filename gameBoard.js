@@ -17,6 +17,8 @@ function gameBoard(){
          * ability to place ships
          * at specific coordinates 
          * by calling the ship factory function
+         * TODO:implement this function check comments
+         * for building
          */
         placeShip(lengthOfShip,startingCoordinate,directionOfPlacement){
             //create a ship with length = lengthOfShip 
@@ -109,15 +111,39 @@ function gameBoard(){
              * it shouldn't be placed
              */
         },
+        
+        /**
+         * receiveAttack function:
+         * takes a pair of coordinates
+         * determines if the attack hit a ship
+         * sends hit function to the correct ship
+         * or records the coordinates of the missed shot
+        todo: implement the method
+        */
+        receiveAttack(coordPair){
+            /**
+             * inspect the coordPair in the
+             * coordiantes of the gameBoard
+             * if coordiantes has a "(maybe a ref to a ship instance)"
+             * call that ship's hit function if not
+             * record the missed shot... to where?
+             * 
+             * in battle ship there are four "gameboards"/grids
+             * two for each player.
+             * each player gets a grid for placing there ships
+             * and another grid for recording there hits and misses
+             * to the opponent
+             * 
+             * should the gameBoard generate 4 grids?
+             * 2 for each player and each grid has
+             * a type, grid type:ships/opponents's hit's and misses
+             * grid type: attack on the opponent's hit's and misses
+             * 
+             */
+        },
+
     }
 
-    /**
-     * receiveAttack function:
-     * takes a pair of coordinates
-     * determines if the attack hit a ship
-     * sends hit function to the correct ship
-     * or records the coordinates of the missed shot
-     */
 
     /**
      * keep track of missed attacks and display them
