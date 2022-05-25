@@ -22,6 +22,9 @@ function gameBoard() {
         .flat(1)
     ),
 
+    //an array of ships placed on the board
+    yourShips:[],
+
     coordinatesOfEnemyShips: Object.fromEntries(
         ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
           .map((letter) =>
@@ -39,6 +42,8 @@ function gameBoard() {
      * ability to place ships
      * at specific coordinates
      * by calling the ship factory function
+     * 
+     * @
      * TODO:implement this function check comments
      * for building
      */
