@@ -165,10 +165,7 @@ function gameBoard() {
         calculatedCoordinateRange.forEach(
           //place the ship and it's position
           (x) => {
-            this.coordinatesOfMyShips[x] = {
-              shipObjectRef: shipToPlace,
-              positionOfShipOnCoordiante: shipToPlace.positions[positionOfShipNumber];
-            }
+            this.coordinatesOfMyShips[x] = [shipToPlace,shipToPlace.positions[positionOfShipNumber]]
             positionOfShipNumber++;
           }
         );
@@ -197,12 +194,21 @@ function gameBoard() {
        *Inspect the coordinateOfOpponentsAttack
        *in coordinatesOfMyShips 
         
+       If coordiante is unoccupied or already contains a miss
+       todo: update such that coordinates that already
+       contain a miss or already fired on can't be fired on
+       again.
+
        If coordiante is occupied:
-         call that ship's hit function
-      
+         call that ship's hit function passing in 
+         the position of the ship that was hit.
+
+         coordiante that have a ships contain an object
+         which first
        **/
-      (this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == 'unoccupied' || this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == 'miss')  ? this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == 'miss' : //check for position on this.coordinatesOfMyShips[coordinateOfOpponentsAttack] (the ship) then pass that position into the hit method of that ship need to update placeShip method 
-        /**
+      (this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == 'unoccupied' || this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == 'miss')  ? this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == 'miss' : this.coordinatesOfMyShips[coordinateOfOpponentsAttack][0].hit(this.coordinatesOfMyShips[coordinateOfOpponentsAttack][1]);
+            
+      /**
          * record the missed shot
          * at the coordinateOfOpponentsAttack
          * in coordinatesOfMyShips.
