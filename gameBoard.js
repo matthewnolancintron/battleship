@@ -40,13 +40,13 @@ function gameBoard() {
      * ability to place ships
      * at specific coordinates
      * by calling the ship factory function
-     * 
+     *
      * return values after successful ship placement:
      * ???
-     * 
+     *
      * return values after non successful ship placement:
      * ???
-     * 
+     *
      */
     placeShip(lengthOfShip, startingCoordinate, directionOfPlacement) {
       let calculatedEndCoordinate;
@@ -161,19 +161,21 @@ function gameBoard() {
          * a reference to the shipToPlace will be
          * available at each coordiante it's located
          */
-        let positionOfShipNumber = 0
+        let positionOfShipNumber = 0;
         calculatedCoordinateRange.forEach(
           //place the ship and it's position
           (x) => {
-            this.coordinatesOfMyShips[x] = [shipToPlace,shipToPlace.positions[positionOfShipNumber]]
+            this.coordinatesOfMyShips[x] = [
+              shipToPlace,
+              shipToPlace.positions[positionOfShipNumber],
+            ];
             positionOfShipNumber++;
           }
         );
         // add ship to armada for quick access
-        this.armada.push(shipToPlace); 
+        this.armada.push(shipToPlace);
 
-        return 'placement succesfull';
-
+        return "placement succesfull";
       } else {
         return "placement is occupied ship can't be place there";
       }
@@ -202,22 +204,21 @@ function gameBoard() {
        If coordiante is occupied:
          call that ship's hit function passing in 
          the position of the ship that was hit.
+          * record the missed shot
+         * at the coordinateOfOpponentsAttack
+         * in coordinatesOfMyShips.
 
          coordiante that have a ships contain an object
          which first
        **/
-      (this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == 'unoccupied' || this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == 'miss')  ? this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == 'miss' : this.coordinatesOfMyShips[coordinateOfOpponentsAttack][0].hit(this.coordinatesOfMyShips[coordinateOfOpponentsAttack][1]);
-            
-      /**
-         * record the missed shot
-         * at the coordinateOfOpponentsAttack
-         * in coordinatesOfMyShips.
-         */
-        
-      
-      
+      this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == "unoccupied" ||
+      this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == "miss"
+        ? this.coordinatesOfMyShips[coordinateOfOpponentsAttack] = "miss"
+        : this.coordinatesOfMyShips[coordinateOfOpponentsAttack][0].hit(
+            this.coordinatesOfMyShips[coordinateOfOpponentsAttack][1]
+          );
 
-       /** 
+      /** 
        food for thought for future me...
        should hits and misses be recorded for the enemy
        who fired the shots too?
@@ -237,7 +238,6 @@ function gameBoard() {
        * or just 2 grids cause gameBoard will be called
        * and generate grids for each player that calls it
        */
-
     },
 
     /**
