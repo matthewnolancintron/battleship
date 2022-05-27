@@ -193,13 +193,15 @@ function gameBoard() {
 
     receiveAttack(coordinateOfOpponentsAttack) {
       /**
+       * first check missedAttacks to see
+       * if it's a previous miss or the shot
+       * has already been hit before.
+       * 
        *Inspect the coordinateOfOpponentsAttack
        *in coordinatesOfMyShips 
         
-       If coordiante is unoccupied or already contains a miss
-       todo: update such that coordinates that already
-       contain a miss or already fired on can't be fired on
-       again.
+       If coordinate is unoccupied: record the miss
+       to both the coordinateOfMyShips and missedAttacks
 
        If coordiante is occupied:
          call that ship's hit function passing in 
@@ -211,12 +213,45 @@ function gameBoard() {
          coordiante that have a ships contain an object
          which first
        **/
-      this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == "unoccupied" ||
-      this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == "miss"
-        ? this.coordinatesOfMyShips[coordinateOfOpponentsAttack] = "miss"
-        : this.coordinatesOfMyShips[coordinateOfOpponentsAttack][0].hit(
-            this.coordinatesOfMyShips[coordinateOfOpponentsAttack][1]
-          );
+
+      /**does attack coordinate already contains a miss
+      coordinates that already
+       contain a miss or already fired on can't be fired on
+       again.
+          */
+      if (this.missedAttacks.includes(coordinateOfOpponentsAttack)) {
+        // don't record anything.
+        return "This coordiante already been attacked";
+      } else {
+        //record a hit or miss
+        let hitOrMiss =
+          this.coordinatesOfMyShips[coordinateOfOpponentsAttack] ==
+            "unoccupied" ||
+          this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == "miss"
+            ? "miss"
+            : "hit";
+
+        switch (hitOrMiss) {
+          case "miss":
+            //record miss on both coordiantesOfMyShips and missedAttacks key
+            this.coordinatesOfMyShips[coordinateOfOpponentsAttack] = "miss";
+            //
+            this.missedAttacks.push(coordinateOfOpponentsAttack);
+            break;
+          case "hit":
+            //
+            this.coordinatesOfMyShips[coordinateOfOpponentsAttack][0].hit(
+              this.coordinatesOfMyShips[coordinateOfOpponentsAttack][1]
+            );
+            break;
+
+          default:
+            break;
+        }
+
+        //return value for testing.
+        return hitOrMiss;
+      }
 
       /** 
        food for thought for future me...
@@ -245,7 +280,7 @@ function gameBoard() {
      * maybe replace missedAttacks key with the
      * a coordiantes object
      */
-    missedAttack: [],
+    missedAttacks: [],
 
     //
     displayMissedAttacks() {
