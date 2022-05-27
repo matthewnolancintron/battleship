@@ -161,8 +161,16 @@ function gameBoard() {
          * a reference to the shipToPlace will be
          * available at each coordiante it's located
          */
+        let positionOfShipNumber = 0
         calculatedCoordinateRange.forEach(
-          (x) => (this.coordinatesOfMyShips[x] = shipToPlace)
+          //place the ship and it's position
+          (x) => {
+            this.coordinatesOfMyShips[x] = {
+              shipObjectRef: shipToPlace,
+              positionOfShipOnCoordiante: shipToPlace.positions[positionOfShipNumber];
+            }
+            positionOfShipNumber++;
+          }
         );
         // add ship to armada for quick access
         this.armada.push(shipToPlace); 
@@ -175,21 +183,40 @@ function gameBoard() {
     },
 
     /**
+     * assumes all ship have already been placed
+
     * receiveAttack function:
-    * takes a pair of coordinates
+    * takes a coordinates
     * determines if the attack hit a ship
     * sends hit function to the correct ship
     * or records the coordinates of the missed shot
-    todo: implement the method
-        */
-    receiveAttack(coordPair) {
+    */
+
+    receiveAttack(coordinateOfOpponentsAttack) {
       /**
-       * inspect the coordPair in the
-       * coordiantes of the gameBoard
-       * if coordiantes has a "(maybe a ref to a ship instance)"
-       * call that ship's hit function if not
-       * record the missed shot... to where?
-       *
+       *Inspect the coordinateOfOpponentsAttack
+       *in coordinatesOfMyShips 
+        
+       If coordiante is occupied:
+         call that ship's hit function
+      
+       **/
+      (this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == 'unoccupied' || this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == 'miss')  ? this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == 'miss' : //check for position on this.coordinatesOfMyShips[coordinateOfOpponentsAttack] (the ship) then pass that position into the hit method of that ship need to update placeShip method 
+        /**
+         * record the missed shot
+         * at the coordinateOfOpponentsAttack
+         * in coordinatesOfMyShips.
+         */
+        
+      
+      
+
+       /** 
+       food for thought for future me...
+       should hits and misses be recorded for the enemy
+       who fired the shots too?
+       if so how and how would I test that?
+       "
        * in battle ship there are four "gameboards"/grids
        * two for each player.
        * each player gets a grid for placing there ships
@@ -201,7 +228,10 @@ function gameBoard() {
        * a type, grid type:ships/opponents's hit's and misses
        * grid type: attack on the opponent's hit's and misses
        *
+       * or just 2 grids cause gameBoard will be called
+       * and generate grids for each player that calls it
        */
+
     },
 
     /**
