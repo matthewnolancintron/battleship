@@ -40,6 +40,9 @@ function gameBoard() {
      * ability to place ships
      * at specific coordinates
      * by calling the ship factory function
+     * 
+     * todo skim over this method, then test it
+     * in gameBoard.test.js
      */
     placeShip(lengthOfShip, startingCoordinate, directionOfPlacement) {
       let calculatedEndCoordinate;
@@ -157,6 +160,8 @@ function gameBoard() {
         calculatedCoordinateRange.forEach(
           (x) => (this.coordinatesOfMyShips[x] = shipToPlace)
         );
+        // add ship to armada for quick access
+        this.armada.push(shipToPlace); 
       } else {
         throw "placement is ocupied ship can't be place there";
       }
