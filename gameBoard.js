@@ -41,8 +41,12 @@ function gameBoard() {
      * at specific coordinates
      * by calling the ship factory function
      * 
-     * todo skim over this method, then test it
-     * in gameBoard.test.js
+     * return values after successful ship placement:
+     * ???
+     * 
+     * return values after non successful ship placement:
+     * ???
+     * 
      */
     placeShip(lengthOfShip, startingCoordinate, directionOfPlacement) {
       let calculatedEndCoordinate;
@@ -79,9 +83,8 @@ function gameBoard() {
         }
 
         if (isOutOfBounds) {
-          //return error or throw error
-          /**do error handling (need to learn how.) */
-          throw "out of bounds ship can't be placed there";
+          //return error for testing
+          return "out of bounds ship can't be placed there";
         } else {
           //create coordiante range
           calculatedCoordinateRange = Array.from(Array(10).keys(), (x) => x + 1)
@@ -131,7 +134,7 @@ function gameBoard() {
         if (isOutOfBounds) {
           //return error or throw error
           /**do error handling (need to learn how.) */
-          throw "out of bounds ship can't be placed there";
+          return "out of bounds ship can't be placed there";
         } else {
           calculatedCoordinateRange = Array.from(Array(10))
             .map((e, i) => i + 65)
@@ -152,6 +155,7 @@ function gameBoard() {
       let isUnocupied = calculatedCoordinateRange.every(
         (x) => this.coordinatesOfMyShips[x] == "unoccupied"
       );
+
       if (isUnocupied) {
         /**placing ship in coordinatesOfMyShips
          * a reference to the shipToPlace will be
@@ -162,8 +166,11 @@ function gameBoard() {
         );
         // add ship to armada for quick access
         this.armada.push(shipToPlace); 
+
+        return 'placement succesfull';
+
       } else {
-        throw "placement is ocupied ship can't be place there";
+        return "placement is occupied ship can't be place there";
       }
     },
 

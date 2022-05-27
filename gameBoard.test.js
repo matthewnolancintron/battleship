@@ -1,7 +1,37 @@
 const gameBoard = require('./gameBoard');
 
-test('not sure what to test or how',()=>{
-    expect(gameBoard()).toBe();
+
+
+let playersGameBoard = gameBoard();
+
+test('should be able to place ships',()=>{
+    const spy = jest.spyOn(playersGameBoard,'placeShip');
+
+    /**
+       create a ship of length 2 (Patrol Boat ) and it's
+     * placement is horizonal left most of the ship is
+     * placed at starting coordiante A5 the rest of the ship
+     * will fall on coordiantes to the right of the starting 
+     * cooridnate.
+     */
+    const isShipPlaced = playersGameBoard.placeShip(2,'A5','horizontal');
+    
+    expect(spy).toHaveBeenCalled();
+    
+    /**
+     * non-succsesfull return values:
+     * 
+     * if out of bounds will return:
+     * "out of bounds ship can't be placed there"
+     * 
+     * if placement is occupied return value is:
+     * "placement is occupied ship can't be place there";
+     * 
+     * succesfull return value:
+     * `placement succesfull'
+     * 
+     */
+    expect(isShipPlaced).toStrictEqual('placement succesfull');
 })
 
 /**
