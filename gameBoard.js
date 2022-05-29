@@ -165,10 +165,7 @@ function gameBoard() {
         calculatedCoordinateRange.forEach(
           //place the ship and it's position
           (x) => {
-            this.coordinatesOfMyShips[x] = [
-              shipToPlace,
-              shipToPlace.positions[positionOfShipNumber],
-            ];
+            this.coordinatesOfMyShips[x] = [shipToPlace, positionOfShipNumber];
             positionOfShipNumber++;
           }
         );
@@ -194,7 +191,6 @@ function gameBoard() {
     receiveAttack(coordinateOfOpponentsAttack) {
       /**
        * first check missedAttacks to see
-       * if it's a previous miss or the shot
        * has already been hit before.
        * 
        *Inspect the coordinateOfOpponentsAttack
@@ -219,7 +215,35 @@ function gameBoard() {
        contain a miss or already fired on can't be fired on
        again.
           */
-      if (this.missedAttacks.includes(coordinateOfOpponentsAttack)) {
+      let isAlreadyHit;
+      if (
+        this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == "unoccupied"
+      ) {
+        isAlreadyHit = false;
+      } else {
+        switch (
+          this.coordinatesOfMyShips[coordinateOfOpponentsAttack][0].positions[
+            this.coordinatesOfMyShips[coordinateOfOpponentsAttack][1]
+          ]
+        ) {
+          case undefined:
+            isAlreadyHit = false;
+            break;
+          case "noHit":
+            isAlreadyHit = false;
+            break;
+          case "hit":
+            isAlreadyHit = true;
+            break;
+          default:
+            break;
+        }
+      }
+
+      if (
+        this.receivedMissedAttacks.includes(coordinateOfOpponentsAttack) ||
+        isAlreadyHit
+      ) {
         // don't record anything.
         return "This coordiante already been attacked";
       } else {
@@ -236,7 +260,7 @@ function gameBoard() {
             //record miss on both coordiantesOfMyShips and missedAttacks key
             this.coordinatesOfMyShips[coordinateOfOpponentsAttack] = "miss";
             //
-            this.missedAttacks.push(coordinateOfOpponentsAttack);
+            this.receivedMissedAttacks.push(coordinateOfOpponentsAttack);
             break;
           case "hit":
             //
@@ -280,7 +304,7 @@ function gameBoard() {
      * maybe replace missedAttacks key with the
      * a coordiantes object
      */
-    missedAttacks: [],
+    receivedMissedAttacks: [],
 
     //
     displayMissedAttacks() {
