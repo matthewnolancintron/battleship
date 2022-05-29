@@ -57,41 +57,44 @@ test('should be able to place ships',()=>{
  * hit 
  * or
  * miss
- * Todo: test this @
  */
  test('record hit or misses on your ships from receivedAttack method',()=>{
     const spy = jest.spyOn(playersGameBoard,'receiveAttack');
 
-    /**
-       enemy fire at A2
-     */
+
     const isHitOrMissAtA5 = playersGameBoard.receiveAttack('A5');
     const isHitOrMissA52nd = playersGameBoard.receiveAttack('A5');
     const isHitOrMissA2 = playersGameBoard.receiveAttack('A2')
 
     expect(spy).toHaveBeenCalled();
-    
-    /**
-     * return values:
-     * ???
-     */
-    
+      
     expect(isHitOrMissAtA5).toStrictEqual('hit');
-    //console.log(playersGameBoard.missedAttacks);
-
+  
     expect(isHitOrMissA52nd).toStrictEqual('This coordiante already been attacked');
-    //console.log(playersGameBoard.missedAttacks);
-
+  
     expect(isHitOrMissA2).toStrictEqual('miss')
 
 });
 
 /**
- * possible tests:
- * 3:Gameboards should keep track of
- *  missed attacks so they can display them properly.
- * 
- * 4:Gameboards should be able
- *  to report whether or not
- *  all of their ships have been sunk.
+ * gameboards should be able
+ * to report whether or not
+ * all of their ships have been sunk.
  */
+ test('test reportIfAllShipsSunk method',()=>{
+    const spy = jest.spyOn(playersGameBoard,'reportIfAllShipsSunk');
+
+    //all ship should not be sunk
+    const isAllShipsSunk = playersGameBoard.reportIfAllShipsSunk();
+
+    expect(spy).toHaveBeenCalled();
+      
+    expect(isAllShipsSunk).toStrictEqual('the armada has not been sunk');
+
+    // hit all positions for each ship in the armada sinking all ships
+    playersGameBoard.armada.forEach(x=>Object.keys(x.positions).forEach(key=>x.positions[key] = 'hit'));
+
+    const allShipsAreSunk = playersGameBoard.reportIfAllShipsSunk();
+
+    expect(allShipsAreSunk).toStrictEqual('all ships in the armada have been sunk');
+});

@@ -179,42 +179,13 @@ function gameBoard() {
     },
 
     /**
-     * assumes all ship have already been placed
-
     * receiveAttack function:
     * takes a coordinates
     * determines if the attack hit a ship
     * sends hit function to the correct ship
     * or records the coordinates of the missed shot
     */
-
     receiveAttack(coordinateOfOpponentsAttack) {
-      /**
-       * first check missedAttacks to see
-       * has already been hit before.
-       * 
-       *Inspect the coordinateOfOpponentsAttack
-       *in coordinatesOfMyShips 
-        
-       If coordinate is unoccupied: record the miss
-       to both the coordinateOfMyShips and missedAttacks
-
-       If coordiante is occupied:
-         call that ship's hit function passing in 
-         the position of the ship that was hit.
-          * record the missed shot
-         * at the coordinateOfOpponentsAttack
-         * in coordinatesOfMyShips.
-
-         coordiante that have a ships contain an object
-         which first
-       **/
-
-      /**does attack coordinate already contains a miss
-      coordinates that already
-       contain a miss or already fired on can't be fired on
-       again.
-          */
       let isAlreadyHit;
       if (
         this.coordinatesOfMyShips[coordinateOfOpponentsAttack] == "unoccupied"
@@ -308,31 +279,17 @@ function gameBoard() {
 
     //
     displayMissedAttacks() {
-      /**
-       * need to make a second second grid object
-       * similar to coordiantes for recording
-       * hit's or misses on the Enemy
-       */
     },
 
     /**
      * report if all ships have been sunk
      */
     reportIfAllShipsSunk() {
-      /**
-       * could look through the coordiantes that
-       * contain the players ships and find all ships
-       * on that grid and check if each ship found
-       * is sunk or not by checking it's prop hasBeenSunk
-       * or create a key on the gameBoard that contains
-       * all ships placed and just call a . every or some
-       * other array method to see if all element in it
-       * pass the condtion of hasBeenSunk = false
-       * if(this.shipsArray.every((x)=>{x.hasBeenSunk == false})){
-       *  all ships have been sunk game over...
-       * report...?
-       * }
-       */
+      if(this.armada.every(x=>x.isSunk())){
+        return 'all ships in the armada have been sunk';
+      } else{
+        return 'the armada has not been sunk';
+      }
     },
   };
 }
