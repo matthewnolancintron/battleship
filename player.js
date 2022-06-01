@@ -1,4 +1,8 @@
-const gameBoard = require("./gameBoard");
+//for testing with jest
+//const gameBoard = require("./gameBoard");
+
+
+import gameBoard from "./gameBoard.js";
 
 function player(type) {
   /*
@@ -100,4 +104,7 @@ function player(type) {
       break;
   }
 }
-module.exports = player;
+export default player;
+
+//for testing?
+//module.exports = player;

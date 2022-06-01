@@ -52,4 +52,7 @@ function ship(length) {
        5 	Patrol Boat 	2 
 */
 
-module.exports = ship;
+export default ship;
+
+//for testing?
+//module.exports = ship;

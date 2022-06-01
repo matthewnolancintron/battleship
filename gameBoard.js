@@ -1,4 +1,8 @@
-const ship = require("./ship");
+// for testing with jest
+//const ship = require("./ship");
+
+import ship from "./ship.js";
+
 function gameBoard() {
   return {
     //an array of ships placed on the board
@@ -294,4 +298,7 @@ function gameBoard() {
   };
 }
 
-module.exports = gameBoard;
+export default gameBoard;
+
+//for testing?
+//module.exports = gameBoard;
