@@ -1,0 +1,57 @@
+/* probably going to have a few nested grids maybe some flex container/items*/
+
+/* 
+    layout:
+    ------
+
+    todo use asci like art to creat a basic
+    design for the layout
+    read more of the css guide too.
+
+    main grid:
+    ----------------------- 
+    |           |          |
+    |           |          |
+    |           |          |
+    |           |          |
+    ------------------------
+    |           |          |
+    |           |          |
+    |           |          |
+    |           |          |
+    -----------------------
+
+ */
+
+#gameBoardContainer{
+    /*
+     center the container in the page
+     with a blue background color
+     */
+    background-color: aqua;
+    width: 90vw;
+    height: 90vh;
+    margin: auto;
+
+    /* grid container for the human and A.I gameboards */
+    display:grid;
+
+    /* todo:define grid lines */
+}
+
+#humansGameBoard{
+    /* is a grid item of the gameBoardContainer */
+    /* is a grid container for the following
+    gridOfHumansShips + gridOfHumansEnemysShips 
+    */
+}
+
+#A.IsGameBoard{
+    /* is a grid item of the gameBoardContainer */
+    /* is a container for the following
+        gridOfA.IsShips + gridOfA.IEnemysShips
+     */
+}
+
+
+
