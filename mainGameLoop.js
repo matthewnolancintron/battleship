@@ -1,12 +1,8 @@
 import player from "./player.js";
 //const ship = require("./ship");
 //const gameBoard = require("./gameBoard");
-/**
- * For now just populate each Gameboard.
- * with predetermined coordinates.
- * You can implement a system for
- * allowing players to place their ships later.
- */
+
+
 (function gameLoop() {
   //create players
   let humanPlayer = player("human");
@@ -15,16 +11,11 @@ import player from "./player.js";
   console.log("create players", humanPlayer, computerPlayer);
 
   //populate gameBoards for both players
-  /*
-  For now just populate each Gameboard. 
-  with predetermined coordinates. 
-  You can implement a system for 
-  allowing players to place their ships later.
-  */
   console.log(humanPlayer.playersBoard, "humansBoard");
   console.log(computerPlayer.playersBoard, "computers board");
 
-  //todo might move to the ship module somehow.
+  //todo might move creation
+  //of ships types to the ship module somehow.
   //or create second helper module for ship type
   //and how many there are in the game?
 
@@ -42,7 +33,6 @@ import player from "./player.js";
    * 
    * feature:
    * a button to placeships in random order for player
-   * 
    */
 
   /**
@@ -208,6 +198,29 @@ num |  type | length
     computerPlayer.playersBoard.coordinatesOfMyShips,
     "placement of ships for A.I"
   );
+
+  /**
+   * todo:
+   * implement a system for allowing players
+   * to place their ships later.
+   * 
+   *  There are several options available 
+      for letting users place their ships.
+      You can let them type coordinates 
+      for each ship, or investigate 
+      implementing drag and drop.
+   */
+
+    /**
+     * todo:optional
+     * polish the intelligence of
+     * the computer player by
+     * having it try adjacent
+     * slots after getting a ‘hit’.
+     */
+
+
+
 })();
 
 function setUpNewGame() {
