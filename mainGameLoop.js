@@ -35,6 +35,17 @@ import player from "./player.js";
    */
 
   /**
+   * could make the randomized ship placement
+   * a feature of the game if a player would like
+   * to set up ships on the board in a randomized
+   * fashion and still use it for A.I ship placement.
+   * 
+   * feature:
+   * a button to placeships in random order for player
+   * 
+   */
+
+  /**
 num |  type | length
    *1 Carrier 	    5
  	2 Battleship 	4
@@ -121,32 +132,67 @@ num |  type | length
             } else {
                 console.log('try again',attempt);
             }
-        } while (attempt == 0);
+        } while (attemptCount == 0);
 
         console.log(attempt);
          */
 
-      //place ship for human
-      let shipPlacementAttemptForHuman = humanPlayer.playersBoard.placeShip(
-        ship.length,
-        possibleStartingCoordiantes[
-          Math.floor(Math.random() * possibleStartingCoordiantes.length)
-        ],
-        possibleDirectionsOfPlacement[
-          Math.floor(Math.random() * possibleDirectionsOfPlacement.length)
-        ]
-      );
+      //used as a condition for the do while loop
+      //will keep trying until attempt is a success
+      //then this varible is incremented by
+      //ending the attempt loop.
+      let attemptCountForHumanShipPlacement = 0;
 
-      //place ship for 'A.I'
-      computerPlayer.playersBoard.placeShip(
-        ship.length,
-        possibleStartingCoordiantes[
-          Math.floor(Math.random() * possibleStartingCoordiantes.length)
-        ],
-        possibleDirectionsOfPlacement[
-          Math.floor(Math.random() * possibleDirectionsOfPlacement.length)
-        ]
-      );
+      //place ship for human
+      let shipPlacementAttemptForHuman = '';
+
+      do{
+        //try to place a ship
+        shipPlacementAttemptForHuman = humanPlayer.playersBoard.placeShip(
+          ship.length,
+          possibleStartingCoordiantes[
+            Math.floor(Math.random() * possibleStartingCoordiantes.length)
+          ],
+          possibleDirectionsOfPlacement[
+            Math.floor(Math.random() * possibleDirectionsOfPlacement.length)
+          ]
+        );
+
+        //log the result of the attempt
+        console.log(shipPlacementAttemptForHuman,'result for human');
+
+
+        if(shipPlacementAttemptForHuman == 'placement succesfull'){
+          attemptCountForHumanShipPlacement++;
+        } else {
+          console.log('try again attemp for human is equal to ', shipPlacementAttemptForHuman);
+        }
+      }while(attemptCountForHumanShipPlacement == 0);
+      
+      //repeat similar process for A.I ship placement
+      let attemptCountForAIShipPlacement = 0;
+      let shipPlacementAttemptForAI = '';
+
+      do{
+        //place ship for 'A.I'
+        shipPlacementAttemptForAI = computerPlayer.playersBoard.placeShip(
+          ship.length,
+          possibleStartingCoordiantes[
+            Math.floor(Math.random() * possibleStartingCoordiantes.length)
+          ],
+          possibleDirectionsOfPlacement[
+            Math.floor(Math.random() * possibleDirectionsOfPlacement.length)
+          ]
+        );
+
+        if(shipPlacementAttemptForAI == 'placement succesfull'){
+          attemptCountForAIShipPlacement++;
+        } else{
+          console.log('try again attemp for AI is equal to ', shipPlacementAttemptForAI);
+        }
+      }while(attemptCountForAIShipPlacement == 0);
+
+
     }
   });
 
