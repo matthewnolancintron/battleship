@@ -1,37 +1,86 @@
 <!-- crafting User Interface:
     display both the player’s 
     boards and render them using
-     information from the Gameboard class. 
+    information from the Gameboard class. 
 
      You need methods to render the gameboards
-      and to take user input for attacking.
-       For attacks, 
-       let the user click on a coordinate
-        in the enemy Gameboard.
+     and to take user input for attacking.
+     For attacks, 
+     let the user click on a coordinate
+     in the enemy Gameboard.
 
-        There are several options available 
-        for letting users place their ships.
-         You can let them type coordinates 
-         for each ship, or investigate 
-         implementing drag and drop.
+     interface has a
+     your grid display:
+     that shows the players ships placed on the grid
+     and later will have a drag and drop system
 
-         You can polish 
-         the intelligence of
-          the computer player by
-           having it try adjacent
-            slots after getting a ‘hit’.
+     and an opponets grid that doesn't show any ships
+     until the player hits the ship or will display 
+     a miss on that grid
+
+     once a ship is hit the turn will stay as the
+     players turn until they make another miss
+
+     when oppnenet hits your grid miss will show up
+     no your grid too and
+     when a ship is hit it will turn red with an x on
+     the section of the ship that was hit
+
+     misses will turn grey with a black dot
+
+     for testing there will be a section underneath 
+     the players grids to show the computer's grids
+     after testing hide that part of the display
+     or remove it until needed again for testing.
+
 -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BattleShip</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script src="mainGameLoop.js" type="module"></script>
-</head>
-<body>
-    
-</body>
+  </head>
+  <body>
+    <!-- container for the gameBoards -->
+    <main id="gameBoardContainer">
+      <!-- humans gameBoard -->
+      <section id="humansGameBoard">
+        <!-- your grid -->
+        <!-- 
+            where you place ships and keep
+            track of opponent's hits and misses
+         -->
+        <section id="gridOfHumansShips"></section>
+
+        <!-- Opponent's grid -->
+        <!-- 
+            blank grid where human attackes
+            and records hits and miss
+
+            uncovering the location of the 
+            enemys armada
+         -->
+        <section id="gridOfHumansEnemysShips"></section>
+      </section>
+
+      <hr />
+
+      <!-- for developemnt: A.I gameBoard-->
+      <section id="A.IsGameBoard">
+        <!-- A.I grid for it's ships -->
+        <section id="gridOfA.IsShips"></section>
+
+        <!-- Opponent's grid:
+             (your grid but from the perspetive
+             of the A.I/opponent) 
+        -->
+        <section id="gridOfA.IEnemysShips"></section>
+    </section>
+
+    </main>
+  </body>
 </html>
