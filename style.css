@@ -9,18 +9,20 @@
     read more of the css guide too.
 
     main grid:
-    ----------------------- 
-    |           |          |
-    |           |          |
-    |           |          |
-    |           |          |
-    ------------------------
-    |           |          |
-    |           |          |
-    |           |          |
-    |           |          |
-    -----------------------
-
+    ---------------------------- 
+    |        human's| grids    |
+    |     player    |   enemy  |
+    |     grid      |   grid   |
+    |               |          |
+    |               |          |
+    ----------------------------
+    A.I's grids: for development only
+    |               |          |
+    |     player    |   enemy  |
+    |     grid      |   grid   |
+    |               |          |
+    |               |          |
+    ----------------------------
  */
 
 #gameBoardContainer{
@@ -36,22 +38,63 @@
     /* grid container for the human and A.I gameboards */
     display:grid;
 
-    /* todo:define grid lines */
+    /*define grid lines */
+    grid-template-columns: repeat(2,1fr);
+    grid-template-rows: repeat(2,1fr);
 }
 
 #humansGameBoard{
+    background-color:floralwhite;
+    border:crimson 1px solid;
     /* is a grid item of the gameBoardContainer */
+    /*set placement of this grid item*/
+    grid-column:1/3;
+    grid-row:1/2;
+
     /* is a grid container for the following
     gridOfHumansShips + gridOfHumansEnemysShips 
     */
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
 }
 
-#A.IsGameBoard{
-    /* is a grid item of the gameBoardContainer */
-    /* is a container for the following
-        gridOfA.IsShips + gridOfA.IEnemysShips
-     */
+#gridOfHumansShips{
+    background-color: darkseagreen;
+    /* style after render by add class method */
 }
+
+#gridOfHumansEnemysShips{
+    background-color: darkmagenta;
+    /* style after render by add class method */
+}
+
+#AIsGameBoard{
+    background-color:aliceblue;
+    border:blue solid 1px;
+    
+    /* is a grid item of the gameBoardContainer */
+    grid-column: 1/3;
+   
+
+    /* is a container for the following
+        gridOfAIsShips + gridOfAIEnemysShips
+     */
+     display: grid;
+     grid-template-columns: repeat(2,1fr);
+}
+
+#gridOfAIsShips{
+    background: darkred;
+    /* style after render by add class method */
+}
+
+#gridOfAIEnemysShips{
+    background-color: darkolivegreen;
+    /* style after render by add class method */
+}
+
+
+
 
 
 
