@@ -1,9 +1,17 @@
 import player from "./player.js";
+import domInteractions from "./domInteraction.js";
 //const ship = require("./ship");
 //const gameBoard = require("./gameBoard");
 
-
 (function gameLoop() {
+  //intial game set up start
+  /**
+   * should only do once per game
+   *
+   * could put steps into a conditional
+   * that way it only happens once per game
+   */
+
   //create players
   let humanPlayer = player("human");
   let computerPlayer = player("A.I");
@@ -30,7 +38,7 @@ import player from "./player.js";
    * a feature of the game if a player would like
    * to set up ships on the board in a randomized
    * fashion and still use it for A.I ship placement.
-   * 
+   *
    * feature:
    * a button to placeships in random order for player
    */
@@ -134,9 +142,9 @@ num |  type | length
       let attemptCountForHumanShipPlacement = 0;
 
       //place ship for human
-      let shipPlacementAttemptForHuman = '';
+      let shipPlacementAttemptForHuman = "";
 
-      do{
+      do {
         //try to place a ship
         shipPlacementAttemptForHuman = humanPlayer.playersBoard.placeShip(
           ship.length,
@@ -149,21 +157,23 @@ num |  type | length
         );
 
         //log the result of the attempt
-        console.log(shipPlacementAttemptForHuman,'result for human');
+        console.log(shipPlacementAttemptForHuman, "result for human");
 
-
-        if(shipPlacementAttemptForHuman == 'placement succesfull'){
+        if (shipPlacementAttemptForHuman == "placement succesfull") {
           attemptCountForHumanShipPlacement++;
         } else {
-          console.log('try again attemp for human is equal to ', shipPlacementAttemptForHuman);
+          console.log(
+            "try again attemp for human is equal to ",
+            shipPlacementAttemptForHuman
+          );
         }
-      }while(attemptCountForHumanShipPlacement == 0);
-      
+      } while (attemptCountForHumanShipPlacement == 0);
+
       //repeat similar process for A.I ship placement
       let attemptCountForAIShipPlacement = 0;
-      let shipPlacementAttemptForAI = '';
+      let shipPlacementAttemptForAI = "";
 
-      do{
+      do {
         //place ship for 'A.I'
         shipPlacementAttemptForAI = computerPlayer.playersBoard.placeShip(
           ship.length,
@@ -175,14 +185,15 @@ num |  type | length
           ]
         );
 
-        if(shipPlacementAttemptForAI == 'placement succesfull'){
+        if (shipPlacementAttemptForAI == "placement succesfull") {
           attemptCountForAIShipPlacement++;
-        } else{
-          console.log('try again attemp for AI is equal to ', shipPlacementAttemptForAI);
+        } else {
+          console.log(
+            "try again attemp for AI is equal to ",
+            shipPlacementAttemptForAI
+          );
         }
-      }while(attemptCountForAIShipPlacement == 0);
-
-
+      } while (attemptCountForAIShipPlacement == 0);
     }
   });
 
@@ -198,42 +209,25 @@ num |  type | length
     computerPlayer.playersBoard.coordinatesOfMyShips,
     "placement of ships for A.I"
   );
+  //end of intial game set up
 
-  /**
-   * todo:
-   * implement a system for allowing players
-   * to place their ships later.
-   * 
-   *  There are several options available 
-      for letting users place their ships.
-      You can let them type coordinates 
-      for each ship, or investigate 
-      implementing drag and drop.
-   */
+  //rest of the game loop takes place in this event.
+  document.addEventListener("DOMContentLoaded", () => {
+    //create domInteractionsObject for access to methods
+    //for dom manipulation in the gameLoop
+    let domInteractionObject = domInteractions();
 
     /**
-     * todo:optional
-     * polish the intelligence of
-     * the computer player by
-     * having it try adjacent
-     * slots after getting a ‘hit’.
+     * render ships and grids and add dom interactions
      */
+    domInteractionObject.displayGameBoardForPlayer(humanPlayer,'human');
+
+    // for development only
+    domInteractionObject.displayGameBoardForPlayer(computerPlayer,'A.I');
 
 
-
+  });
 })();
-
-function setUpNewGame() {
-  //create players
-  //populate the players gameboards
-}
-
-function populateGameBoard() {}
-
-//creates array of two player instances
-function createPlayers() {
-  return [].push(player("human")).push("A.I");
-}
 
 /**
  * The game loop should step through
@@ -247,8 +241,17 @@ function createPlayers() {
  */
 
 /**
+ * todo:
  * Create conditions so that the game
  *  ends once one players ships have
  * all been sunk. This function is appropriate
  * for the Game module.
+ */
+
+/**
+ * todo:optional
+ * polish the intelligence of
+ * the computer player by
+ * having it try adjacent
+ * slots after getting a ‘hit’.
  */
