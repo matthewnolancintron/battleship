@@ -128,12 +128,88 @@ function domInteractions(human, AI) {
 
 function generateGridElement() {
   console.log("generate grid?");
-  //todo: create 10 x 10 grid
+  let gridContainer = document.createElement('div');
+  gridContainer.classList.add('gridContainer')
   /**
    * top row horizonatal is labeled a-j
    * vertical column off to the left is labeled 1-10
    */
-}
+  let gridColumnLabels = [];
+  let gridRowLabels = [];
+  let gridCoordiantes = [];
+  //letters are the columns
+  [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+  ].forEach(c=>{
+    let gridColumnLabel = document.createElement('p');
+    gridColumnLabel.textContent = c;
+    gridColumnLabel.setAttribute('data-column', c);
+    
+    //todo add class
+    gridColumnLabel.classList.add('gridColumnLabel');
+
+    gridColumnLabel.style.gridArea = `${c}`;
+
+    gridColumnLabels.push(gridColumnLabel);
+
+    //generate cells
+    Array.from(Array(10).keys(),x=>x+1).forEach(r=>{
+      let gridCoordiante = document.createElement('div');
+      
+      //todo add class 
+      gridCoordiante.classList.add('gridCoordiante');
+      
+      //
+      gridCoordiante.setAttribute('data-coordiante', `${c}${r}`);
+
+      gridCoordiante.style.gridArea = `${c}${r}`;
+
+      gridCoordiantes.push(gridCoordiante);
+    });  
+  });
+  
+  //numbers are the rows
+  Array.from(Array(10).keys(),x=>x+1).forEach((x,i)=>{
+    let gridRowLabel = document.createElement('p');
+    gridRowLabel.textContent = x;
+    
+    //todo add class
+    gridRowLabel.classList.add('gridRowLabel');
+
+    gridRowLabel.setAttribute('data-row',x);
+
+    gridRowLabel.style.gridArea = `X${x}`;
+
+    gridRowLabels.push(gridRowLabel);
+  });
+
+  // console.log(gridColumnLabels);
+  // console.log(gridRowLabels);
+  // console.log(gridCoordiantes);
+
+  gridColumnLabels.forEach(c=>{
+    gridContainer.append(c);
+  });
+
+  gridRowLabels.forEach(r=>{
+    gridContainer.append(r);
+  });
+
+  gridCoordiantes.forEach(x => {
+    gridContainer.append(x);
+  });
+
+  return gridContainer;
+};
 
 function addShipPlacementOption(){
   
