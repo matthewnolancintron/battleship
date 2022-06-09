@@ -1,10 +1,50 @@
 // for testing with jest
 //const ship = require("./ship");
-
 import ship from "./ship.js";
 
 function gameBoard() {
   return {
+    /**
+     * all ship types of the game
+     * objects that act as instructions
+     * for creating ship objects
+     */
+    /**
+     * num |  type | length
+     * 1 Carrier 	  5
+     * 2 Battleship 	4
+     * 3 Destroyer 	  3
+     * 4 Submarine  	3
+     * 5 Patrol Boat 	2
+     */
+    shipsOfTheGame: [
+      {
+        num: 1,
+        typeOfShip: "Carrier",
+        length: 5,
+      },
+      {
+        num: 2,
+        typeOfShip: "BattleShip",
+        length: 4,
+      },
+      {
+        num: 3,
+        typeOfShip: "Destroyer",
+        length: 3,
+      },
+      {
+        num: 4,
+        typeOfShip: "sumbarine",
+        length: 3,
+      },
+      {
+        num: 5,
+        typeOfShip: "Patrol Boat",
+        length: 2,
+      },
+    ],
+
     //an array of ships placed on the board
     armada: [],
 
@@ -182,13 +222,125 @@ function gameBoard() {
       }
     },
 
+    randomiseShipPlacements() {
+      /**
+       *
+       */
+      let possibleStartingCoordiantes = [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+      ]
+        .map((letter) =>
+          Array.from(Array(10).keys(), (x) => `${letter}${x + 1}`)
+        )
+        .flat(1);
+
+      let possibleDirectionsOfPlacement = ["horizontal", "vertical"];
+
+      //
+      this.shipsOfTheGame.forEach((ship) => {
+        //place ship.num number of that ship
+        for (let index = 0; index < ship.num; index++) {
+          /**
+           * make sure to retry placement on unsucceful
+           * attemps so that all ships are placed
+           */
+
+          /**
+            psuedo code for try something until succseful
+            at least once before moving on
+            
+            function yesNo(){
+                let choice = ['y','x,'z'];
+                return choice[Math.floor(Math.random()*choice.length)];
+            }
+            
+            let attemptCount  = 0;
+            let attempt; 
+            
+            do {
+                attempt = yesNo();
+                console.log(attempt)
+      
+                if(attempt = 'y'){
+                    attemptCount++;
+                } else {
+                    console.log('try again',attempt);
+                }
+            } while (attemptCount == 0);
+    
+            console.log(attempt);
+             */
+
+          //used as a condition for the do while loop
+          //will keep trying until attempt is a success
+          //then this varible is incremented by
+          //ending the attempt loop.
+          let attemptCountForHumanShipPlacement = 0;
+
+          //place ship for human
+          let shipPlacementAttemptForHuman = "";
+
+          do {
+            //try to place a ship
+            shipPlacementAttemptForHuman = this.placeShip(
+              ship.length,
+              possibleStartingCoordiantes[
+                Math.floor(Math.random() * possibleStartingCoordiantes.length)
+              ],
+              possibleDirectionsOfPlacement[
+                Math.floor(Math.random() * possibleDirectionsOfPlacement.length)
+              ]
+            );
+
+            //log the result of the attempt
+            console.log(shipPlacementAttemptForHuman, "result for human");
+
+            if (shipPlacementAttemptForHuman == "placement succesfull") {
+              attemptCountForHumanShipPlacement++;
+            } else {
+              console.log(
+                "try again attemp for human is equal to ",
+                shipPlacementAttemptForHuman
+              );
+            }
+          } while (attemptCountForHumanShipPlacement == 0);
+        }
+      });
+    },
+
+    clearShipPlacements() {
+      // clear coordinatesOfMyShips
+      this.coordinatesOfMyShips = Object.fromEntries(
+        ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
+          .map((letter) =>
+            Array.from(Array(10).keys(), (x) => [
+              `${letter}${x + 1}`,
+              "unoccupied",
+            ])
+          )
+          .flat(1)
+      );
+
+      // clear armada
+      this.armada = [];
+    },
+
     /**
-    * receiveAttack function:
-    * takes a coordinates
-    * determines if the attack hit a ship
-    * sends hit function to the correct ship
-    * or records the coordinates of the missed shot
-    */
+     * receiveAttack function:
+     * takes a coordinates
+     * determines if the attack hit a ship
+     * sends hit function to the correct ship
+     * or records the coordinates of the missed shot
+     */
     receiveAttack(coordinateOfOpponentsAttack) {
       let isAlreadyHit;
       if (
@@ -282,17 +434,16 @@ function gameBoard() {
     receivedMissedAttacks: [],
 
     //
-    displayMissedAttacks() {
-    },
+    displayMissedAttacks() {},
 
     /**
      * report if all ships have been sunk
      */
     reportIfAllShipsSunk() {
-      if(this.armada.every(x=>x.isSunk())){
-        return 'all ships in the armada have been sunk';
-      } else{
-        return 'the armada has not been sunk';
+      if (this.armada.every((x) => x.isSunk())) {
+        return "all ships in the armada have been sunk";
+      } else {
+        return "the armada has not been sunk";
       }
     },
   };
