@@ -1,39 +1,3 @@
-<!-- crafting User Interface:
-    display both the player’s 
-    boards and render them using
-    information from the Gameboard class. 
-
-     You need methods to render the gameboards
-     and to take user input for attacking.
-     For attacks, 
-     let the user click on a coordinate
-     in the enemy Gameboard.
-
-     interface has a
-     your grid display:
-     that shows the players ships placed on the grid
-     and later will have a drag and drop system
-
-     and an opponets grid that doesn't show any ships
-     until the player hits the ship or will display 
-     a miss on that grid
-
-     once a ship is hit the turn will stay as the
-     players turn until they make another miss
-
-     when oppnenet hits your grid miss will show up
-     no your grid too and
-     when a ship is hit it will turn red with an x on
-     the section of the ship that was hit
-
-     misses will turn grey with a black dot
-
-     for testing there will be a section underneath 
-     the players grids to show the computer's grids
-     after testing hide that part of the display
-     or remove it until needed again for testing.
-
--->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -54,7 +18,9 @@
             where you place ships and keep
             track of opponent's hits and misses
          -->
-        <section id="gridOfHumansShips"></section>
+        <section id="gridOfHumansShips">
+          <h1>your grid</h1>
+        </section>
 
         <!-- Opponent's grid -->
         <!-- 
@@ -64,7 +30,9 @@
             uncovering the location of the 
             enemys armada
          -->
-        <section id="gridOfHumansEnemysShips"></section>
+        <section id="gridOfHumansEnemysShips">
+          <h1>oppnent's grid</h1>
+        </section>
       </section>
 
       
@@ -72,13 +40,17 @@
       <!-- for developemnt: A.I gameBoard-->
       <section id="AIsGameBoard">
         <!-- A.I grid for it's ships -->
-        <section id="gridOfAIsShips"></section>
+        <section id="gridOfAIsShips">
+          <h1>your grid (A.I)</h1>
+        </section>
 
         <!-- Opponent's grid:
              (your grid but from the perspetive
              of the A.I/opponent) 
         -->
-        <section id="gridOfAIEnemysShips"></section>
+        <section id="gridOfAIEnemysShips">
+          <h1>oppnent's grid (A.I)</h1>
+        </section>
     </section>
 
     </main>
