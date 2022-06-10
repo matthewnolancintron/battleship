@@ -1,3 +1,5 @@
+import player from "./player.js";
+
 function domInteractions(human, AI) {
   return {
     /**
@@ -239,13 +241,14 @@ function generateShipPlacementOptions(player) {
     );
 
 
-    // will need to generate ship element too...
-    /**
-     * todo: create function that generates
-     * ship elements each call will generate
-     * 1 set of ships a whole ship armada.
-     * and return and array of those ships elements.
-     */
+    let shipElements = generateShipElementsOfTheGame(player);
+    console.log(shipElements);
+
+    // place ship elements on the grid
+    shipElements.forEach(ship=>{
+      // 
+
+    });
   });
 
   // todo create manual ship placementEvent.
@@ -258,6 +261,47 @@ function generateShipPlacementOptions(player) {
 
   //return the container element
   return shipPlacementOptionsContainer;
+}
+
+function generateShipElementsOfTheGame(player) {
+  console.log(player.playersBoard.shipsOfTheGame);
+  console.log(player.playersBoard.armada);
+  let shipElements = [];
+  player.playersBoard.shipsOfTheGame.forEach((ship) => {
+    /**
+     * each ship object has the following props
+     * typeOfShip prop, string that says the type of ship it is
+     * num, represents the number ships to be made of that type
+     * length, the size of the ship element the space it takes up on the grid
+     */
+    //generate num number of ships of type typeOfShip
+    for (let index = 0; index < ship.num; index++) {
+      //container for sub elements that make up a ship
+      let shipElement = document.createElement('div');
+
+      //can be used to make ships look unique from one another
+      shipElement.classList.add(`${ship.typeOfShip}`);
+
+      // create sub elements that make up a ship
+      for (let index = 0; index < ship.length; index++) {
+        let shipPositionElement = document.createElement('div');
+        shipPositionElement.classList.add('shipPositionElement');
+         
+        //data position:
+        //to help with placement on grid
+        //tracking when hit or not, to update styles
+        shipPositionElement.setAttribute('data-position',index);
+
+        // add component to shipElement
+        shipElement.append(shipPositionElement);
+      }
+
+      // add ship to array
+      shipElements.push(shipElement);
+    }
+
+  });
+  return shipElements;
 }
 
 export default domInteractions;

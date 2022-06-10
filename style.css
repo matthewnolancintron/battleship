@@ -71,6 +71,57 @@ body{
     text-align: center;
 }
 
+/* button of placeing ships */
+.shipPlacementOptionsContainer{
+
+}
+
+/*  */
+.shipPlacementMessage{
+
+}
+
+/*  */
+.randomPlacementOption{
+
+}
+
+/*  */
+.manualPlacementOption{
+
+}
+
+/* class for ships elements */
+.Carrier{
+
+}
+
+.BattleShip{
+
+}
+
+.Destroyer{
+
+}
+
+.sumbarine{
+
+}
+
+.PatrolBoat{
+
+}
+
+/* 
+sub component of each ship
+size is equal to one grid unit
+ */
+.shipPositionElement{
+    /* style so the ship shows up */
+    background-color: rgba(20, 20, 50, 0.7);
+}
+
+
 #gridOfHumansEnemysShips{
  
 }
@@ -101,6 +152,7 @@ body{
     user-select: none;
     margin: 0;
     background-color: aliceblue;
+    text-align: center;
 }
 
 .gridCoordiante{
