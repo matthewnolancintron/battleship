@@ -1,5 +1,6 @@
-function ship(length) {
+function ship(length,type) {
   return {
+    type:type,
     length: length, //number
 
     //where they've been hit?
