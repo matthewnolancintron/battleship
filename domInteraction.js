@@ -246,9 +246,70 @@ function generateShipPlacementOptions(player) {
 
     // place ship elements on the grid
     shipElements.forEach(ship=>{
-      // 
+      /**
+       * should loop through ship elements or player.playersBoard.coordinatesOfMyShips
 
+       */
+      console.log(ship);
     });
+
+    console.log(player.playersBoard.coordinatesOfMyShips);
+    for (const key in player.playersBoard.coordinatesOfMyShips) {
+      if(player.playersBoard.coordinatesOfMyShips[key] != 'unoccupied'){
+        let positionOfShipAtCoordinate = player.playersBoard.coordinatesOfMyShips[key][1];
+        let typeOfShipElement = player.playersBoard.coordinatesOfMyShips[key][0].type;
+        
+        // console.log(`${typeOfShipElement} position ${positionOfShipAtCoordinate} at coordniate ${key}`);
+        
+        // console.log(document.querySelector(`.gridCoordiante[data-coordiante="${key}"]`));
+        
+        // console.log(shipElements.find(ship => ship.classList[0] == typeOfShipElement),'found it');
+
+        //find the ship element needed
+        let shipNeeded = shipElements.find(ship => ship.classList[0] == typeOfShipElement);
+
+        //get the required position of ship
+        let requiredSubElementOfShip = shipNeeded.children[positionOfShipAtCoordinate]; 
+        let requiredCoordianteElement = document.querySelector(`.gridCoordiante[data-coordiante="${key}"]`);
+
+        
+        console.log('position number',positionOfShipAtCoordinate);
+        console.log('ship needed',shipNeeded);
+        console.log(requiredSubElementOfShip,'requiredSubElementOfShip');
+        console.log(requiredCoordianteElement,'requiredCoordianteElement')
+
+        /**
+         * possible ways to place ship at coordiante:
+         * 
+         * option 1: place sub element of ship into correct coordianteElement
+         * will need to remove sub element from ship container element?
+         * should maybe update or add a class to it? or might not need to
+         * 
+         * option 2: preffered method here.
+         * update placeShip function and ship
+         * to save the calculatedCoordinateRange of a particulare ship
+         * or re calculate it here, and use that data to set ship elements
+         * grid area prop 
+         *  grid-area: <name> | <row-start> / <column-start> / <row-end> / <column-end>;
+         * would need to calcualte the following for the prop grid area for each ship
+         * name = coordiante,
+         * row-start,row-end(horizontal=placementLength),
+         * column-start,column-end(vertialPlacementLength),
+         * can set row-start to coordiante-end or coordiante-start
+         * like A2/start
+         * also set the z index to 1 so the elements is an
+         * a layer above the grid.
+         * and make sure the ship has a color show it shows up
+         * each ship would be a sibling of the
+         * 
+         * option 3: give up on the shipElements and just coloring the 
+         * grid coordiantes could just adjust classes might be more difficult
+         * to keep track of and data is more tangled last resort to use option
+         * 3
+         */
+        // document.querySelector(`.gridCoordiante[data-coordiante="${key}"]`).append(ship)
+      }
+    }
   });
 
   // todo create manual ship placementEvent.
