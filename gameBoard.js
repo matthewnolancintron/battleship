@@ -40,7 +40,7 @@ function gameBoard() {
       },
       {
         num: 5,
-        typeOfShip: "Patrol Boat",
+        typeOfShip: "PatrolBoat",
         length: 2,
       },
     ],
@@ -92,7 +92,7 @@ function gameBoard() {
      * ???
      *
      */
-    placeShip(lengthOfShip, startingCoordinate, directionOfPlacement) {
+    placeShip(lengthOfShip, startingCoordinate, directionOfPlacement,type) {
       let calculatedEndCoordinate;
       let calculatedCoordinateRange;
       let isOutOfBounds;
@@ -116,7 +116,7 @@ function gameBoard() {
         );
 
         //find end point
-        calculatedEndCoordinate = startingCoordianteNumber + lengthOfShip;
+        calculatedEndCoordinate = startingCoordianteNumber + (lengthOfShip-1);
 
         /**
          * check for out of bounds:
@@ -165,7 +165,7 @@ function gameBoard() {
           startingCoordianteLetter.charCodeAt(0) - 65;
 
         calculatedEndCoordinate =
-          startingCoordianteLetterPosition + lengthOfShip;
+          startingCoordianteLetterPosition + (lengthOfShip-1);
 
         /**
          * check for out of bounds:
@@ -195,7 +195,7 @@ function gameBoard() {
        * then place ship replace unoccupied
        * with using  ship(lengthOfShip)
        */
-      let shipToPlace = ship(lengthOfShip);
+      let shipToPlace = ship(lengthOfShip,type);
       let isUnocupied = calculatedCoordinateRange.every(
         (x) => this.coordinatesOfMyShips[x] == "unoccupied"
       );
@@ -206,9 +206,11 @@ function gameBoard() {
          * available at each coordiante it's located
          */
         let positionOfShipNumber = 0;
+        console.log(calculatedCoordinateRange,'coord range');
         calculatedCoordinateRange.forEach(
           //place the ship and it's position
           (x) => {
+            console.log(positionOfShipNumber,'pos of ship num')
             this.coordinatesOfMyShips[x] = [shipToPlace, positionOfShipNumber];
             positionOfShipNumber++;
           }
@@ -298,7 +300,8 @@ function gameBoard() {
               ],
               possibleDirectionsOfPlacement[
                 Math.floor(Math.random() * possibleDirectionsOfPlacement.length)
-              ]
+              ],
+              ship.typeOfShip
             );
 
             //log the result of the attempt
