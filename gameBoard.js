@@ -195,7 +195,20 @@ function gameBoard() {
        * then place ship replace unoccupied
        * with using  ship(lengthOfShip)
        */
-      let shipToPlace = ship(lengthOfShip,type);
+      console.log(calculatedCoordinateRange.length, 'coord range.length');
+      console.log(lengthOfShip,'ship.length');
+      console.log('------------------------------')
+      /**
+       * if coordiante range is less than or 
+       * not equal to ships length than
+       * return ship can't fit.
+       */
+      if(calculatedCoordinateRange.length != lengthOfShip){
+        return "ship can't fit";
+      }
+
+
+      let shipToPlace = ship(lengthOfShip,type,calculatedCoordinateRange);
       let isUnocupied = calculatedCoordinateRange.every(
         (x) => this.coordinatesOfMyShips[x] == "unoccupied"
       );
@@ -290,7 +303,7 @@ function gameBoard() {
 
           //place ship for human
           let shipPlacementAttemptForHuman = "";
-
+          
           do {
             //try to place a ship
             shipPlacementAttemptForHuman = this.placeShip(
