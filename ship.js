@@ -1,8 +1,8 @@
-function ship(length,type) {
+function ship(length,type,coordianteRangeOfPlacement) {
   return {
     type:type,
     length: length, //number
-
+    placement: coordianteRangeOfPlacement,
     //where they've been hit?
     /**
      * genereate an object with number of keys
