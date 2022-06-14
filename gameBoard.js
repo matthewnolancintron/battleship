@@ -163,10 +163,7 @@ function gameBoard() {
 
         let startingCoordianteLetterPosition =
           startingCoordianteLetter.charCodeAt(0) - 65;
-
-        calculatedEndCoordinate =
-          startingCoordianteLetterPosition + (lengthOfShip-1);
-
+    
         /**
          * check for out of bounds:
          * due to position and length of ship
@@ -176,17 +173,18 @@ function gameBoard() {
         }
 
         if (isOutOfBounds) {
-          //return error or throw error
-          /**do error handling (need to learn how.) */
+          console.log('out of bounds');
           return "out of bounds ship can't be placed there";
         } else {
           calculatedCoordinateRange = Array.from(Array(10))
             .map((e, i) => i + 65)
             .map((x) => String.fromCharCode(x))
-            .slice(startingCoordianteLetterPosition, calculatedEndCoordinate)
+            .slice(startingCoordianteLetterPosition)
             .map((x) => `${x}${startingCoordinate.split("")[1]}`);
+          console.log('vertical coord range',calculatedCoordinateRange);
         }
       }
+
 
       /**
        * check if there is already a ship
@@ -303,7 +301,7 @@ function gameBoard() {
 
           //place ship for human
           let shipPlacementAttemptForHuman = "";
-          
+
           do {
             //try to place a ship
             shipPlacementAttemptForHuman = this.placeShip(
