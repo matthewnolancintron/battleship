@@ -240,73 +240,92 @@ function generateShipPlacementOptions(player) {
       "placement of ships for human"
     );
 
-
     let shipElements = generateShipElementsOfTheGame(player);
-    console.log(shipElements);
+    // console.log(player.playersBoard.coordinatesOfMyShips);
 
-    // place ship elements on the grid
-    shipElements.forEach(ship=>{
-      /**
-       * should loop through ship elements or player.playersBoard.coordinatesOfMyShips
-
-       */
-      console.log(ship);
-    });
-
-    console.log(player.playersBoard.coordinatesOfMyShips);
     for (const key in player.playersBoard.coordinatesOfMyShips) {
-      if(player.playersBoard.coordinatesOfMyShips[key] != 'unoccupied'){
+      if (player.playersBoard.coordinatesOfMyShips[key] != "unoccupied") {
         let positionOfShipAtCoordinate = player.playersBoard.coordinatesOfMyShips[key][1];
         let typeOfShipElement = player.playersBoard.coordinatesOfMyShips[key][0].type;
-        
-        // console.log(`${typeOfShipElement} position ${positionOfShipAtCoordinate} at coordniate ${key}`);
-        
-        // console.log(document.querySelector(`.gridCoordiante[data-coordiante="${key}"]`));
-        
-        // console.log(shipElements.find(ship => ship.classList[0] == typeOfShipElement),'found it');
 
         //find the ship element needed
-        let shipNeeded = shipElements.find(ship => ship.classList[0] == typeOfShipElement);
+        let shipNeeded = shipElements.find(
+          (ship) => ship.classList[0] == typeOfShipElement
+        );
 
         //get the required position of ship
-        let requiredSubElementOfShip = shipNeeded.children[positionOfShipAtCoordinate]; 
-        let requiredCoordianteElement = document.querySelector(`.gridCoordiante[data-coordiante="${key}"]`);
-
-        
-        console.log('position number',positionOfShipAtCoordinate);
-        console.log('ship needed',shipNeeded);
-        console.log(requiredSubElementOfShip,'requiredSubElementOfShip');
-        console.log(requiredCoordianteElement,'requiredCoordianteElement')
+        let requiredSubElementOfShip =
+          shipNeeded.children[positionOfShipAtCoordinate];
+        let requiredCoordianteElement = document.querySelector(
+          `.gridCoordiante[data-coordiante="${key}"]`
+        );
 
         /**
-         * possible ways to place ship at coordiante:
-         * 
-         * option 1: place sub element of ship into correct coordianteElement
-         * will need to remove sub element from ship container element?
-         * should maybe update or add a class to it? or might not need to
-         * 
-         * option 2: preffered method here.
-         * update placeShip function and ship
-         * to save the calculatedCoordinateRange of a particulare ship
-         * or re calculate it here, and use that data to set ship elements
-         * grid area prop 
-         *  grid-area: <name> | <row-start> / <column-start> / <row-end> / <column-end>;
-         * would need to calcualte the following for the prop grid area for each ship
-         * name = coordiante,
-         * row-start,row-end(horizontal=placementLength),
-         * column-start,column-end(vertialPlacementLength),
-         * can set row-start to coordiante-end or coordiante-start
-         * like A2/start
-         * also set the z index to 1 so the elements is an
-         * a layer above the grid.
-         * and make sure the ship has a color show it shows up
-         * each ship would be a sibling of the
-         * 
-         * option 3: give up on the shipElements and just coloring the 
-         * grid coordiantes could just adjust classes might be more difficult
-         * to keep track of and data is more tangled last resort to use option
-         * 3
+          use start and end coord of coordRange to figure out
+          orientation of ship.
+
+          if they differ by letter but the numbers are the same
+         * then it spans vertically
+
+          if they differ by number but letters are the same 
+          then is spans horizontally
          */
+        let shipsCoordianteRange =
+          player.playersBoard.coordinatesOfMyShips[key][0].placement;
+
+        console.log(shipsCoordianteRange,'00000')
+        let shipsOrientation;
+
+        console.log(shipsCoordianteRange[0].split('')[0],'startCoord letter');
+        console.log(shipsCoordianteRange[shipsCoordianteRange.length-1].split('')[0],'endCoord letter');
+
+        if(shipsCoordianteRange[0].split('')[0] == shipsCoordianteRange[shipsCoordianteRange.length-1].split('')[0] ){
+          console.log('start and end coord have the same letter and are on the same row placement is horizontal');
+          shipsOrientation = 'horizontal';
+        } else {
+          console.log('start and end coord have different letter and are not on the same row ship placement must be vertical');
+          shipsOrientation = 'vertical';
+        }
+
+        
+
+        /**
+         * 2:use that data to set ship element's
+         *   grid area prop like this,
+         *   grid-area: <name> | <row-start> / <column-start> / <row-end> / <column-end>;
+         *
+         *  name = coordiante,
+         *  row-start,row-end(horizontal=placementLength),
+         *  column-start,column-end(vertialPlacementLength),
+         *  can set row-start to coordiante-end or coordiante-start
+         *  like A2/start
+         *
+         * with the following data:
+         *  orientation(vertical/horizantioal),
+         *  ship length(number),
+         *  starting coordiante,
+         *  end coordiante,
+         *
+         * if vertical
+         * grid area: startCoord-start/startCoord-start/endCoord-end/startCoord-start
+         * A1-start/A1-start/E1-end/A1-start
+         *
+         * if horizontal
+         * grid area: startCoordiante/startCoord-start/startCoord-start/endCoord-end
+         */
+
+        /**
+         * 3:set style so element overlaps the grid:
+         *   set the z index to 1 so the elements is an
+         *   a layer above the grid.
+         *   and make sure the ship has a color show it shows up
+         */
+
+        /**
+         *  * 4:add all ships into gridOfHumansShips/gridContainer
+         * so that each ship would be a sibling of the gridElements
+         */
+
         // document.querySelector(`.gridCoordiante[data-coordiante="${key}"]`).append(ship)
       }
     }
@@ -338,20 +357,20 @@ function generateShipElementsOfTheGame(player) {
     //generate num number of ships of type typeOfShip
     for (let index = 0; index < ship.num; index++) {
       //container for sub elements that make up a ship
-      let shipElement = document.createElement('div');
+      let shipElement = document.createElement("div");
 
       //can be used to make ships look unique from one another
       shipElement.classList.add(`${ship.typeOfShip}`);
 
       // create sub elements that make up a ship
       for (let index = 0; index < ship.length; index++) {
-        let shipPositionElement = document.createElement('div');
-        shipPositionElement.classList.add('shipPositionElement');
-         
+        let shipPositionElement = document.createElement("div");
+        shipPositionElement.classList.add("shipPositionElement");
+
         //data position:
         //to help with placement on grid
         //tracking when hit or not, to update styles
-        shipPositionElement.setAttribute('data-position',index);
+        shipPositionElement.setAttribute("data-position", index);
 
         // add component to shipElement
         shipElement.append(shipPositionElement);
@@ -360,7 +379,6 @@ function generateShipElementsOfTheGame(player) {
       // add ship to array
       shipElements.push(shipElement);
     }
-
   });
   return shipElements;
 }
