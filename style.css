@@ -92,6 +92,16 @@ body{
 }
 
 /* class for ships elements */
+.Carrier,
+.BattleShip,
+.Destroyer,
+.sumbarine,
+.PatrolBoat{
+    z-index: 1;
+    background-color: rgba(37, 172, 109, 0.92)
+}
+
+
 .Carrier{
 
 }
