@@ -1,4 +1,5 @@
 import player from "./player.js";
+import ship from "./ship.js";
 
 function domInteractions(human, AI) {
   return {
@@ -232,7 +233,19 @@ function generateShipPlacementOptions(player) {
     //need to clear placement before randomizing it again.
     player.playersBoard.clearShipPlacements();
 
-    //
+    //also need to clear ship elements from the grid.
+    let gridElementChildrenElementsArray = Array.from(document.querySelector("#gridOfHumansShips>.gridContainer").children);
+
+    //clear ships off the grid
+    for (let index = 0; index < gridElementChildrenElementsArray.length; index++) {
+      let element = gridElementChildrenElementsArray[index];
+      if(!(element.classList.contains("gridCoordiante")) &&
+      !(element.classList.contains('gridColumnLabel')) &&
+      !(element.classList.contains('gridRowLabel'))){
+        console.log(element,'\n\n\n');
+        element.remove();
+      }
+    }
     player.playersBoard.randomiseShipPlacements();
     console.log(player.playersBoard.armada, "humans ships");
     console.log(
@@ -244,89 +257,129 @@ function generateShipPlacementOptions(player) {
     // console.log(player.playersBoard.coordinatesOfMyShips);
 
     for (const key in player.playersBoard.coordinatesOfMyShips) {
+      /**
+       * logic error: no space around ship elements
+       * need at lest one grid unit of space around each ship element
+       * 
+       * todo: update function for creating placement coordiantes of each ship
+       * to check for space before selecting location.
+       */
+
+
       if (player.playersBoard.coordinatesOfMyShips[key] != "unoccupied") {
-        let positionOfShipAtCoordinate = player.playersBoard.coordinatesOfMyShips[key][1];
-        let typeOfShipElement = player.playersBoard.coordinatesOfMyShips[key][0].type;
+        if(player.playersBoard.coordinatesOfMyShips[key][1] == 0){
+          console.log('\n\n\n');
+          console.log(player.playersBoard.coordinatesOfMyShips[key],key);
+          console.log('\n\n\n');
+          
+          let typeOfShipElement = player.playersBoard.coordinatesOfMyShips[key][0].type;
+  
+          console.log(shipElements, "shipElements before splice");
+          console.log(shipElements.length,'length of ship elemetns array');
 
-        //find the ship element needed
-        let shipNeeded = shipElements.find(
-          (ship) => ship.classList[0] == typeOfShipElement
-        );
+          //
+          let shipNeeded;
+          
+          if (shipElements.length > 0) {
+            //find location of ship index.
+            let indexOfShipNeeded = shipElements.findIndex(
+              (ship) => ship.classList[0] == typeOfShipElement
+            );
+            
+            //move from array and store in variable
+            shipNeeded = shipElements.splice(indexOfShipNeeded, 1)[0];
+          }
 
-        //get the required position of ship
-        let requiredSubElementOfShip =
-          shipNeeded.children[positionOfShipAtCoordinate];
-        let requiredCoordianteElement = document.querySelector(
-          `.gridCoordiante[data-coordiante="${key}"]`
-        );
+          console.log(shipElements, "shipElements after splice");
+          console.log(shipNeeded, "shipneeded");
 
-        /**
-          use start and end coord of coordRange to figure out
-          orientation of ship.
+          /**
+            use start and end coord of coordRange to figure out
+            orientation of ship.
+  
+            if they differ by letter but the numbers are the same
+           * then it spans vertically
+  
+            if they differ by number but letters are the same 
+            then is spans horizontally
+           */
+          let shipsCoordianteRange =
+            player.playersBoard.coordinatesOfMyShips[key][0].placement;
+  
+          let startCoord = shipsCoordianteRange[0];
+          let endCoord = shipsCoordianteRange[shipsCoordianteRange.length - 1];
+  
+          let shipsOrientation;
+  
+          console.log(shipsCoordianteRange[0].split("")[0], "startCoord letter");
+          console.log(
+            shipsCoordianteRange[shipsCoordianteRange.length - 1].split("")[0],
+            "endCoord letter"
+          );
+  
+          if (
+            shipsCoordianteRange[0].split("")[0] ==
+            shipsCoordianteRange[shipsCoordianteRange.length - 1].split("")[0]
+          ) {
+            console.log(
+              "start and end coord have the same letter and are on the same row placement is horizontal"
+            );
+            shipsOrientation = "horizontal";
+          } else {
+            console.log(
+              "start and end coord have different letter and are not on the same row ship placement must be vertical"
+            );
+            shipsOrientation = "vertical";
+          }
+  
+          /**
+           * 2:use that data to set ship element's
+           *   grid area prop like this,
+           *   grid-area: <name> | <row-start> / <column-start> / <row-end> / <column-end>;
+           *
+           *  name = coordiante,
+           *  row-start,row-end(horizontal=placementLength),
+           *  column-start,column-end(vertialPlacementLength),
+           *  can set row-start to coordiante-end or coordiante-start
+           *  like A2/start
+           *
+           * with the following data:
+           *  orientation(vertical/horizantioal),
+           *  ship length(number),
+           *  starting coordiante,
+           *  end coordiante,
+           */
+          if (shipsOrientation == "horizontal") {
+            //grid area: startCoordiante/startCoord-start/startCoord-start/endCoord-end
+            console.log(shipNeeded, "horizontal");
+            shipNeeded.style.gridArea = `${startCoord}/${startCoord}-start/${startCoord}-start/${endCoord}-end`;
+          }
+  
+          if (shipsOrientation == "vertical") {
+            // grid area: startCoord-start/startCoord-start/endCoord-end/startCoord-start A1-start/A1-start/E1-end/A1-start
+            console.log(shipNeeded, "vertical");
+            shipNeeded.style.gridArea = `${startCoord}-start/${startCoord}-start/${endCoord}-end/${startCoord}-start`;
+          }
+  
+          /**
+           * 3:set style so element overlaps the grid:
+           *   set the z index to 1 so the elements is an
+           *   a layer above the grid.
+           *   and make sure the ship has a color show it shows up
+           */
+  
+          /**
+           *  * 4:add all ships into gridOfHumansShips/gridContainer
+           * so that each ship would be a sibling of the gridElements
+           */
+          document
+            .querySelector("#gridOfHumansShips>.gridContainer")
+            .append(shipNeeded);
 
-          if they differ by letter but the numbers are the same
-         * then it spans vertically
 
-          if they differ by number but letters are the same 
-          then is spans horizontally
-         */
-        let shipsCoordianteRange =
-          player.playersBoard.coordinatesOfMyShips[key][0].placement;
 
-        console.log(shipsCoordianteRange,'00000')
-        let shipsOrientation;
 
-        console.log(shipsCoordianteRange[0].split('')[0],'startCoord letter');
-        console.log(shipsCoordianteRange[shipsCoordianteRange.length-1].split('')[0],'endCoord letter');
-
-        if(shipsCoordianteRange[0].split('')[0] == shipsCoordianteRange[shipsCoordianteRange.length-1].split('')[0] ){
-          console.log('start and end coord have the same letter and are on the same row placement is horizontal');
-          shipsOrientation = 'horizontal';
-        } else {
-          console.log('start and end coord have different letter and are not on the same row ship placement must be vertical');
-          shipsOrientation = 'vertical';
         }
-
-        
-
-        /**
-         * 2:use that data to set ship element's
-         *   grid area prop like this,
-         *   grid-area: <name> | <row-start> / <column-start> / <row-end> / <column-end>;
-         *
-         *  name = coordiante,
-         *  row-start,row-end(horizontal=placementLength),
-         *  column-start,column-end(vertialPlacementLength),
-         *  can set row-start to coordiante-end or coordiante-start
-         *  like A2/start
-         *
-         * with the following data:
-         *  orientation(vertical/horizantioal),
-         *  ship length(number),
-         *  starting coordiante,
-         *  end coordiante,
-         *
-         * if vertical
-         * grid area: startCoord-start/startCoord-start/endCoord-end/startCoord-start
-         * A1-start/A1-start/E1-end/A1-start
-         *
-         * if horizontal
-         * grid area: startCoordiante/startCoord-start/startCoord-start/endCoord-end
-         */
-
-        /**
-         * 3:set style so element overlaps the grid:
-         *   set the z index to 1 so the elements is an
-         *   a layer above the grid.
-         *   and make sure the ship has a color show it shows up
-         */
-
-        /**
-         *  * 4:add all ships into gridOfHumansShips/gridContainer
-         * so that each ship would be a sibling of the gridElements
-         */
-
-        // document.querySelector(`.gridCoordiante[data-coordiante="${key}"]`).append(ship)
       }
     }
   });
