@@ -173,7 +173,7 @@ function gameBoard() {
         }
 
         if (isOutOfBounds) {
-          console.log('out of bounds');
+
           return "out of bounds ship can't be placed there";
         } else {
           calculatedCoordinateRange = Array.from(Array(10))
@@ -181,7 +181,7 @@ function gameBoard() {
             .map((x) => String.fromCharCode(x))
             .slice(startingCoordianteLetterPosition)
             .map((x) => `${x}${startingCoordinate.split("")[1]}`);
-          console.log('vertical coord range',calculatedCoordinateRange);
+        
         }
       }
 
@@ -193,9 +193,6 @@ function gameBoard() {
        * then place ship replace unoccupied
        * with using  ship(lengthOfShip)
        */
-      console.log(calculatedCoordinateRange.length, 'coord range.length');
-      console.log(lengthOfShip,'ship.length');
-      console.log('------------------------------')
       /**
        * if coordiante range is less than or 
        * not equal to ships length than
@@ -217,12 +214,10 @@ function gameBoard() {
          * available at each coordiante it's located
          */
         let positionOfShipNumber = 0;
-        console.log(calculatedCoordinateRange,'coord range');
-        calculatedCoordinateRange.forEach(
+           calculatedCoordinateRange.forEach(
           //place the ship and it's position
           (x) => {
-            console.log(positionOfShipNumber,'pos of ship num')
-            this.coordinatesOfMyShips[x] = [shipToPlace, positionOfShipNumber];
+               this.coordinatesOfMyShips[x] = [shipToPlace, positionOfShipNumber];
             positionOfShipNumber++;
           }
         );
@@ -316,16 +311,11 @@ function gameBoard() {
             );
 
             //log the result of the attempt
-            console.log(shipPlacementAttemptForHuman, "result for human");
-
+    
             if (shipPlacementAttemptForHuman == "placement succesfull") {
               attemptCountForHumanShipPlacement++;
             } else {
-              console.log(
-                "try again attemp for human is equal to ",
-                shipPlacementAttemptForHuman
-              );
-            }
+                }
           } while (attemptCountForHumanShipPlacement == 0);
         }
       });

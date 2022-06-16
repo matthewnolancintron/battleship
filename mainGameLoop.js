@@ -90,8 +90,47 @@ import domInteractions from "./domInteraction.js";
     // for development only
     domInteractionObject.displayGameBoardForPlayer(computerPlayer, "A.I");
     
-    //...
+    let a = document.querySelector('.randomPlacementOption');
 
+    //96bpm
+
+    //1/2 note
+    let time=1250;
+
+    //1/4 note
+    let time2=625;
+
+    let id1 = setInterval(apple,time);  
+    let id2;
+
+    function apple(){
+      a.click();
+      time -=625;
+      console.log(time,'time');
+      if(time <= 625){
+        console.log('switch to rate 2');
+        clearInterval(id1);
+        time2=625;
+        id2 = setInterval(tea,time2);     
+      }
+    }
+
+    function tea(){
+      a.click();
+      time2 += 25;
+      console.log(time2,'time 2')
+      if(time2 >= 675){
+        console.log('switch to rate 1')
+        clearInterval(id2);
+        time = 1250;
+        id1 = setInterval(apple,time);
+      }
+    }
+
+
+
+    //...
+    
     /**
      * The game loop should step through
      * the game turn by turn using only

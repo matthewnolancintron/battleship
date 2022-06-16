@@ -145,9 +145,6 @@ function generateGridElement() {
     gridRowLabels.push(gridRowLabel);
   });
 
-  // console.log(gridColumnLabels);
-  // console.log(gridRowLabels);
-  // console.log(gridCoordiantes);
 
   gridColumnLabels.forEach((c) => {
     gridContainer.append(c);
@@ -217,45 +214,36 @@ function generateShipPlacementOptions(player) {
   let shipPlacementOptionsContainer = document.createElement("div");
   shipPlacementOptionsContainer.classList.add("shipPlacementOptionsContainer");
 
-  let shipPlacementMessage = document.createElement("p");
-  shipPlacementMessage.textContent = "How do you want to place your ships?";
-  shipPlacementMessage.classList.add("shipPlacementMessage");
-
   let placeShipsRandomlyOptionButton = document.createElement("button");
   placeShipsRandomlyOptionButton.classList.add("randomPlacementOption");
   placeShipsRandomlyOptionButton.textContent = "randomise";
 
-  let placeShipsManualOptionButton = document.createElement("button");
-  placeShipsManualOptionButton.classList.add("manualPlacementOption");
-  placeShipsManualOptionButton.textContent = "manual";
+  /**
+   * trigger the randomize button at a frame rate
+   */
 
   placeShipsRandomlyOptionButton.addEventListener("click", () => {
     //need to clear placement before randomizing it again.
     player.playersBoard.clearShipPlacements();
 
-    //also need to clear ship elements from the grid.
-    let gridElementChildrenElementsArray = Array.from(document.querySelector("#gridOfHumansShips>.gridContainer").children);
 
+
+    //also need to clear ship elements from the grid.
+    let gridElementChildrenElementsArray = Array.from(document.querySelectorAll(".gridContainer")).map(x=>Array.from(x.children)).flat(1);
     //clear ships off the grid
     for (let index = 0; index < gridElementChildrenElementsArray.length; index++) {
       let element = gridElementChildrenElementsArray[index];
       if(!(element.classList.contains("gridCoordiante")) &&
       !(element.classList.contains('gridColumnLabel')) &&
       !(element.classList.contains('gridRowLabel'))){
-        console.log(element,'\n\n\n');
-        element.remove();
+         element.remove();
       }
     }
     player.playersBoard.randomiseShipPlacements();
-    console.log(player.playersBoard.armada, "humans ships");
-    console.log(
-      player.playersBoard.coordinatesOfMyShips,
-      "placement of ships for human"
-    );
+  
 
     let shipElements = generateShipElementsOfTheGame(player);
-    // console.log(player.playersBoard.coordinatesOfMyShips);
-
+ 
     for (const key in player.playersBoard.coordinatesOfMyShips) {
       /**
        * logic error: no space around ship elements
@@ -268,15 +256,10 @@ function generateShipPlacementOptions(player) {
 
       if (player.playersBoard.coordinatesOfMyShips[key] != "unoccupied") {
         if(player.playersBoard.coordinatesOfMyShips[key][1] == 0){
-          console.log('\n\n\n');
-          console.log(player.playersBoard.coordinatesOfMyShips[key],key);
-          console.log('\n\n\n');
-          
+         
           let typeOfShipElement = player.playersBoard.coordinatesOfMyShips[key][0].type;
   
-          console.log(shipElements, "shipElements before splice");
-          console.log(shipElements.length,'length of ship elemetns array');
-
+     
           //
           let shipNeeded;
           
@@ -290,9 +273,7 @@ function generateShipPlacementOptions(player) {
             shipNeeded = shipElements.splice(indexOfShipNeeded, 1)[0];
           }
 
-          console.log(shipElements, "shipElements after splice");
-          console.log(shipNeeded, "shipneeded");
-
+    
           /**
             use start and end coord of coordRange to figure out
             orientation of ship.
@@ -311,25 +292,14 @@ function generateShipPlacementOptions(player) {
   
           let shipsOrientation;
   
-          console.log(shipsCoordianteRange[0].split("")[0], "startCoord letter");
-          console.log(
-            shipsCoordianteRange[shipsCoordianteRange.length - 1].split("")[0],
-            "endCoord letter"
-          );
-  
+       
           if (
             shipsCoordianteRange[0].split("")[0] ==
             shipsCoordianteRange[shipsCoordianteRange.length - 1].split("")[0]
           ) {
-            console.log(
-              "start and end coord have the same letter and are on the same row placement is horizontal"
-            );
-            shipsOrientation = "horizontal";
+           shipsOrientation = "horizontal";
           } else {
-            console.log(
-              "start and end coord have different letter and are not on the same row ship placement must be vertical"
-            );
-            shipsOrientation = "vertical";
+           shipsOrientation = "vertical";
           }
   
           /**
@@ -351,13 +321,13 @@ function generateShipPlacementOptions(player) {
            */
           if (shipsOrientation == "horizontal") {
             //grid area: startCoordiante/startCoord-start/startCoord-start/endCoord-end
-            console.log(shipNeeded, "horizontal");
+           
             shipNeeded.style.gridArea = `${startCoord}/${startCoord}-start/${startCoord}-start/${endCoord}-end`;
           }
   
           if (shipsOrientation == "vertical") {
             // grid area: startCoord-start/startCoord-start/endCoord-end/startCoord-start A1-start/A1-start/E1-end/A1-start
-            console.log(shipNeeded, "vertical");
+    
             shipNeeded.style.gridArea = `${startCoord}-start/${startCoord}-start/${endCoord}-end/${startCoord}-start`;
           }
   
@@ -372,33 +342,28 @@ function generateShipPlacementOptions(player) {
            *  * 4:add all ships into gridOfHumansShips/gridContainer
            * so that each ship would be a sibling of the gridElements
            */
-          document
-            .querySelector("#gridOfHumansShips>.gridContainer")
-            .append(shipNeeded);
-
-
-
+          
+          let a = document.getElementsByClassName("gridContainer")
+          a = Array.from(a);
+          a.forEach(x=>{
+            x.appendChild(shipNeeded.cloneNode(true));
+          });
 
         }
       }
     }
   });
 
-  // todo create manual ship placementEvent.
-  placeShipsManualOptionButton.addEventListener("click", () => {});
 
   // add buttons to container
-  shipPlacementOptionsContainer.append(shipPlacementMessage);
   shipPlacementOptionsContainer.append(placeShipsRandomlyOptionButton);
-  shipPlacementOptionsContainer.append(placeShipsManualOptionButton);
-
+  
+  
   //return the container element
   return shipPlacementOptionsContainer;
 }
 
 function generateShipElementsOfTheGame(player) {
-  console.log(player.playersBoard.shipsOfTheGame);
-  console.log(player.playersBoard.armada);
   let shipElements = [];
   player.playersBoard.shipsOfTheGame.forEach((ship) => {
     /**
