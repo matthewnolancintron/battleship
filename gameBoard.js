@@ -92,7 +92,7 @@ function gameBoard() {
      * ???
      *
      */
-    placeShip(lengthOfShip, startingCoordinate, directionOfPlacement,type) {
+    placeShip(lengthOfShip, startingCoordinate, directionOfPlacement, type) {
       let calculatedEndCoordinate;
       let calculatedCoordinateRange;
       let isOutOfBounds;
@@ -116,7 +116,7 @@ function gameBoard() {
         );
 
         //find end point
-        calculatedEndCoordinate = startingCoordianteNumber + (lengthOfShip-1);
+        calculatedEndCoordinate = startingCoordianteNumber + (lengthOfShip - 1);
 
         /**
          * check for out of bounds:
@@ -163,7 +163,7 @@ function gameBoard() {
 
         let startingCoordianteLetterPosition =
           startingCoordianteLetter.charCodeAt(0) - 65;
-    
+
         /**
          * check for out of bounds:
          * due to position and length of ship
@@ -173,7 +173,7 @@ function gameBoard() {
         }
 
         if (isOutOfBounds) {
-          console.log('out of bounds');
+          console.log("out of bounds");
           return "out of bounds ship can't be placed there";
         } else {
           calculatedCoordinateRange = Array.from(Array(10))
@@ -181,10 +181,9 @@ function gameBoard() {
             .map((x) => String.fromCharCode(x))
             .slice(startingCoordianteLetterPosition)
             .map((x) => `${x}${startingCoordinate.split("")[1]}`);
-          console.log('vertical coord range',calculatedCoordinateRange);
+          console.log("vertical coord range", calculatedCoordinateRange);
         }
       }
-
 
       /**
        * check if there is already a ship
@@ -193,20 +192,174 @@ function gameBoard() {
        * then place ship replace unoccupied
        * with using  ship(lengthOfShip)
        */
-      console.log(calculatedCoordinateRange.length, 'coord range.length');
-      console.log(lengthOfShip,'ship.length');
-      console.log('------------------------------')
+      console.log(calculatedCoordinateRange.length, "coord range.length");
+      console.log(lengthOfShip, "ship.length");
+      console.log("------------------------------");
       /**
-       * if coordiante range is less than or 
+       * if coordiante range is less than or
        * not equal to ships length than
        * return ship can't fit.
        */
-      if(calculatedCoordinateRange.length != lengthOfShip){
+      if (calculatedCoordinateRange.length != lengthOfShip) {
         return "ship can't fit";
       }
 
+      /**
+       * logic error: no space around ship elements
+       * need at lest one grid unit of space around each ship element
+       *
+       * todo: update function for creating placement coordiantes of each ship
+       * to check for space before selecting location.
+       */
 
-      let shipToPlace = ship(lengthOfShip,type,calculatedCoordinateRange);
+      /**
+       * make sure there is at least
+       * one unit of free space around grid unit
+       *
+       * check all of the ship in question's coordiantes
+       * in the coordiante range
+       *
+       * for each coordiante check the coordinate
+       * to the left or right / above or below it
+       * if any of those location are occupied then
+       * return an error message do this on the first
+       * coordiante on the first condition that is true
+       *
+       * ['A','B','C','D','E','F','G','H','I','J']
+       * [1,2,3,4,5,6,7,8,9,10]
+       * check perimeter of ship:
+       *
+       * if coord letter is A can only count up
+       * if coord letter is J can only count down
+       *
+       * if coord number is 1 can only count up
+       * if coord number is 10 can only count down
+       *
+       */
+      if (directionOfPlacement == "vertical") {
+        /**
+         * only check about and below the first and last coordiante
+         * check to the left and right of each coordiante
+         * with expections to A,J with above and below checks
+         * and expection to 1,10 with left and right checks
+         */
+        calculatedCoordinateRange.forEach((coord, index, coords) => {
+          //first chord
+          if (index == 0) {
+            /**
+             * for the first coordinate;
+             *-if possible (any letter expect A)
+             *check one letter above the first coordiante
+             */
+
+            //if letter of coord is not A
+            if(coord.split('')[0] != 'A'){
+              //check the coord one letter before
+              // | number stays the same
+
+              //letter math:
+              // String.fromCharCode?
+              //charCodeAt
+              /**
+               * find char code for the letter
+               * using letter.charCodeAt(0)
+               * then subtract by 1 to find the charCode
+               * for the letter before it
+               * 
+               * use that as input for
+               * String.fromCharCode to get the letter
+               */
+
+              //building coordinate to check
+              let theLetterBefore = String.fromCharCode(coord.split('')[0].charCodeAt(0)-1);
+              let coordAbove = theLetterBefore + coord.split('')[1];
+              console.log(coordAbove,'\n\n\n coord Above');
+
+              if(this.coordinatesOfMyShips[coordAbove] != "unoccupied"){
+                console.log('need at least one space above')
+                return 'coord above starting coord is occupied need at least one space'
+              }
+              
+            }
+          }
+
+          //first last and everything in between
+          /**
+           * for the first coordiante to the last do:
+           *   check to the left and right of each coord:
+           *      -if possible (any number expect 1) check to it's
+           *      left (minus 1)
+           *      -if possible(any number expect 10) check
+           *      to it's right(plus 1)
+           */
+          
+          //check left of coord
+          if(coord.split('')[1] != 1){
+            let numberBefore = coord.split('')[1] - 1;
+            let coordToTheLeft = coord.split('')[0] + numberBefore;
+            
+            if(this.coordinatesOfMyShips[coordToTheLeft] != "unoccupied"){
+              //
+              console.log('need at least one space to the left');
+              return "need at least one space to the left";
+            }
+
+          }
+
+          //check right of coord
+          //start here@
+
+          //last cord
+          if (index == coords.length - 1) {
+            /**
+             *  for the last coordiante:
+             *    -if possible (any letter expect J)
+             *    check one letter below the last coordiante
+             */
+          }
+        });
+      }
+
+      if (directionOfPlacement == "horizontal") {
+        /**
+         * * if all coord letters are the same horizonatal placement
+         * only check left and right for the first and last coord
+         * and check above and below for each coord
+         * with expections to A,J with above and below checks
+         * and expection to 1,10 with left and right checks
+         */
+        calculatedCoordinateRange.forEach((coord, index, coords) => {
+          //
+          if (index == 0) {
+            /**
+             * for the first coordinate;
+             *      -if possible (any number expect 1)
+             *       check one number to the left of the first coordiante
+             */
+          }
+
+          //
+          /**
+           *  for the first coordiante to the last do:
+           *    check to the above and below of each coord:
+           *      -if possible (any letter expect A) check above by 1
+           *      -if possible(any letter expect J) check below by 1
+           *
+           */
+
+          //
+          if (index == coords.length - 1) {
+            /**
+             *
+             *  for the last coordiante:
+             *    -if possible (any number expect 10)
+             *    check one number to the right.
+             */
+          }
+        });
+      }
+
+      let shipToPlace = ship(lengthOfShip, type, calculatedCoordinateRange);
       let isUnocupied = calculatedCoordinateRange.every(
         (x) => this.coordinatesOfMyShips[x] == "unoccupied"
       );
@@ -217,11 +370,11 @@ function gameBoard() {
          * available at each coordiante it's located
          */
         let positionOfShipNumber = 0;
-        console.log(calculatedCoordinateRange,'coord range');
+        console.log(calculatedCoordinateRange, "coord range");
         calculatedCoordinateRange.forEach(
           //place the ship and it's position
           (x) => {
-            console.log(positionOfShipNumber,'pos of ship num')
+            console.log(positionOfShipNumber, "pos of ship num");
             this.coordinatesOfMyShips[x] = [shipToPlace, positionOfShipNumber];
             positionOfShipNumber++;
           }

@@ -257,15 +257,6 @@ function generateShipPlacementOptions(player) {
     // console.log(player.playersBoard.coordinatesOfMyShips);
 
     for (const key in player.playersBoard.coordinatesOfMyShips) {
-      /**
-       * logic error: no space around ship elements
-       * need at lest one grid unit of space around each ship element
-       * 
-       * todo: update function for creating placement coordiantes of each ship
-       * to check for space before selecting location.
-       */
-
-
       if (player.playersBoard.coordinatesOfMyShips[key] != "unoccupied") {
         if(player.playersBoard.coordinatesOfMyShips[key][1] == 0){
           console.log('\n\n\n');
