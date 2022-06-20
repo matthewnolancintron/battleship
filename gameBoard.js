@@ -90,6 +90,8 @@ function gameBoard() {
      *
      * return values after non successful ship placement:
      * ???
+     * 
+     * place ship in random position
      *
      */
     placeShip(lengthOfShip, startingCoordinate, directionOfPlacement, type) {
@@ -115,8 +117,30 @@ function gameBoard() {
           startingCoordinate.split("")[1]
         );
 
+        //start coord == 4
+        //length of ship == 2
+        //4 + (2-1)
+        //end coord == 5
+        //?4 --> ?5
+        //or
+        //start coord 3
+        //length of ship 5
+        //3 + (5-1)
+        //end coord == 7
+        //?3 --> ?7, 3,4,5,6,7 5 positions used
+        //splice is exclusive to the end index so need to go over
+        //the end by 1 by not subtracting one from the lengthOfShip
+        //example above would be:
+        //start coord 3
+        //length of ship 5
+        //3 + 5
+        //end coord == 8
+        //3? --> ?7
+        //since splice doesn't included the end which is ?8
+        //it count up to 1 before the end in this caes ?7
+
         //find end point
-        calculatedEndCoordinate = startingCoordianteNumber + (lengthOfShip - 1);
+        calculatedEndCoordinate = startingCoordianteNumber + (lengthOfShip);
 
         /**
          * check for out of bounds:
@@ -131,9 +155,11 @@ function gameBoard() {
           return "out of bounds ship can't be placed there";
         } else {
           //create coordiante range
+          console.log(lengthOfShip,'lengthOfShip');
           calculatedCoordinateRange = Array.from(Array(10).keys(), (x) => x + 1)
-            .slice(startingCoordianteNumber - 1, calculatedEndCoordinate)
+            .slice(startingCoordianteNumber, calculatedEndCoordinate)
             .map((x) => `${startingCoordinate.split("")[0]}${x}`);
+            console.log('horizontal coord range',calculatedCoordinateRange);
         }
       } else if (directionOfPlacement == "vertical") {
         /**
@@ -176,6 +202,7 @@ function gameBoard() {
           console.log("out of bounds");
           return "out of bounds ship can't be placed there";
         } else {
+          //update calcualtedCoordrange to be only of size == shipLength
           calculatedCoordinateRange = Array.from(Array(10))
             .map((e, i) => i + 65)
             .map((x) => String.fromCharCode(x))
@@ -205,14 +232,6 @@ function gameBoard() {
       }
 
       /**
-       * logic error: no space around ship elements
-       * need at lest one grid unit of space around each ship element
-       *
-       * todo: update function for creating placement coordiantes of each ship
-       * to check for space before selecting location.
-       */
-
-      /**
        * make sure there is at least
        * one unit of free space around grid unit
        *
@@ -236,14 +255,60 @@ function gameBoard() {
        * if coord number is 10 can only count down
        *
        */
+      console.log(this.coordinatesOfMyShips,'coordiantes');
+
+      /**
+       * take a long time to set up ships on board
+       * possible never get to place all ships
+       * will place some ships 
+       * 
+       * possible reasons:
+       * just takes a long time to find an open spot to place a ship
+       * could reduce time by only making coordiante ranges equal to the length of
+       * the ship being made that would be one less thing to have to redo for
+       * 
+       * once certain ships have been placed into certain coordiantes the other
+       * ships no matter where it tries to place them will be able to fit so
+       * in retries on an infinite loop.
+       * ... not sure how to solve that issuse just yet.
+       * 
+       * rather than random coordiante ranges
+       * have depleting pool of coordiante ranges
+       * that as ships are placed
+       * 
+       *  have a set pool of coordiante ranges
+       * 
+       * currently working on creating coordiante range of size == lengthOfShip only
+       * to reduce amount of retry placements
+       * 
+       * next is to update possibility pools
+       * as ship is place remove coordiantes that the ship was placed onto
+       * from the possible coordiante of placements also subtract the coordiante
+       * that are around the perimeter of the ship from the possible cooridantes of placements
+       * so a ships are placed update the dataStructure that has the possible coordiantes of placement
+       * to choose from so that only possible placements are available from the 
+       * possiblity pool 
+       * 
+       * if the program can place all ships successivly then save that state as 
+       * a unique identity in a dataStructure like a set that can' have duplicates
+       * 
+       * if the process reaches a point where a ship can't be placed 
+       * redo, but also keep track of placements  that led to the dead-end state
+       * use that info such that next time that time of attemp wont be made
+       * 
+       * 
+       * 
+       */
       if (directionOfPlacement == "vertical") {
         /**
-         * only check about and below the first and last coordiante
-         * check to the left and right of each coordiante
-         * with expections to A,J with above and below checks
-         * and expection to 1,10 with left and right checks
+         * - only check above and below the first and last coordiante
+         *   expections to A,J with above and below checks
+         *
+         *  -check to the left and right of each coordiante
+         *  expection to 1,10 with left and right checks
          */
-        calculatedCoordinateRange.forEach((coord, index, coords) => {
+        let doesEachCoordHaveSpace = calculatedCoordinateRange.every((coord, index, coords) => {
+          console.log(this.coordinatesOfMyShips[coord],'coord on grid v');
           //first chord
           if (index == 0) {
             /**
@@ -253,7 +318,7 @@ function gameBoard() {
              */
 
             //if letter of coord is not A
-            if(coord.split('')[0] != 'A'){
+            if (coord.split("")[0] != "A") {
               //check the coord one letter before
               // | number stays the same
 
@@ -265,21 +330,25 @@ function gameBoard() {
                * using letter.charCodeAt(0)
                * then subtract by 1 to find the charCode
                * for the letter before it
-               * 
+               *
                * use that as input for
                * String.fromCharCode to get the letter
                */
 
               //building coordinate to check
-              let theLetterBefore = String.fromCharCode(coord.split('')[0].charCodeAt(0)-1);
-              let coordAbove = theLetterBefore + coord.split('')[1];
-              console.log(coordAbove,'\n\n\n coord Above');
+              let theLetterBefore = String.fromCharCode(
+                coord.split("")[0].charCodeAt(0) - 1
+              );
 
-              if(this.coordinatesOfMyShips[coordAbove] != "unoccupied"){
-                console.log('need at least one space above')
-                return 'coord above starting coord is occupied need at least one space'
-              }
-              
+              let coordAbove = theLetterBefore + coord.split("")[1];
+
+              if (this.coordinatesOfMyShips[coordAbove] != "unoccupied") {
+                console.log(`need at least one space above coord ${coord}`);
+                
+                console.log(`coord is ${coord}`, `coord above is ${coordAbove}`);
+
+                return false;
+              } 
             }
           }
 
@@ -292,22 +361,32 @@ function gameBoard() {
            *      -if possible(any number expect 10) check
            *      to it's right(plus 1)
            */
-          
-          //check left of coord
-          if(coord.split('')[1] != 1){
-            let numberBefore = coord.split('')[1] - 1;
-            let coordToTheLeft = coord.split('')[0] + numberBefore;
-            
-            if(this.coordinatesOfMyShips[coordToTheLeft] != "unoccupied"){
-              //
-              console.log('need at least one space to the left');
-              return "need at least one space to the left";
-            }
 
+          //check left of coord
+          if (coord.split("")[1] != 1) {
+            let numberBefore = Number(coord.split("")[1]) - 1;
+            let coordToTheLeft = coord.split("")[0] + numberBefore;
+
+            if (this.coordinatesOfMyShips[coordToTheLeft] != "unoccupied") {
+              console.log(`need at least one space to the left of coord ${coord}`);
+
+              console.log(`coord is ${coord}`, `coord to the left is ${coordToTheLeft}`);
+              return false;
+            }
           }
 
           //check right of coord
-          //start here@
+          if (coord.split("")[1] != 10) {
+            let numberAfter = Number(coord.split("")[1]) + 1;
+            let coordToTheRight = coord.split("")[0] + numberAfter;
+
+            if (this.coordinatesOfMyShips[coordToTheRight] != "unoccupied") {
+              console.log(`need at least one space to the right ${coord}`);
+
+              console.log(`coord is ${coord}`, `coord to the right is ${coordToTheRight}`);
+              return false;
+            }
+          }
 
           //last cord
           if (index == coords.length - 1) {
@@ -316,8 +395,32 @@ function gameBoard() {
              *    -if possible (any letter expect J)
              *    check one letter below the last coordiante
              */
+            if (coord.split("")[0] != "J") {
+              //building coordinate to check
+              let theLetterAfter = String.fromCharCode(
+                coord.split("")[0].charCodeAt(0) + 1
+              );
+
+              let coordBelow = theLetterAfter + coord.split("")[1];
+
+              if (this.coordinatesOfMyShips[coordBelow] != "unoccupied") {
+                console.log(`need at least one space below of coord ${coord}`);
+
+                console.log(`coord is ${coord}`, `coord below is ${coordBelow}`);
+                return false;
+              }
+            }
           }
+
+          //all condition above were not met so return true coord has space around it
+          console.log(coord,'has space');
+          return true;
         });
+
+        console.log(doesEachCoordHaveSpace);
+        if(doesEachCoordHaveSpace == false){
+          return "doesn't have at least one grid unit of free space around perimeter of the ship"
+        }
       }
 
       if (directionOfPlacement == "horizontal") {
@@ -328,7 +431,8 @@ function gameBoard() {
          * with expections to A,J with above and below checks
          * and expection to 1,10 with left and right checks
          */
-        calculatedCoordinateRange.forEach((coord, index, coords) => {
+        let doesEachCoordHaveSpace = calculatedCoordinateRange.every((coord, index, coords) => {
+          console.log(this.coordinatesOfMyShips[coord],'coord on grid h');
           //
           if (index == 0) {
             /**
@@ -336,6 +440,16 @@ function gameBoard() {
              *      -if possible (any number expect 1)
              *       check one number to the left of the first coordiante
              */
+            if (coord.split("")[1] != 1) {
+              let numberBefore = Number(coord.split("")[1]) - 1;
+              let coordToTheLeft = coord.split("")[0] + numberBefore;
+
+              if (this.coordinatesOfMyShips[coordToTheLeft] != "unoccupied") {
+                console.log(`need at least one space to the left of coord ${coord}`);
+                console.log(`coord is ${coord}`, `coord left is ${coordToTheLeft}`);
+                return false;
+              }
+            }
           }
 
           //
@@ -347,6 +461,38 @@ function gameBoard() {
            *
            */
 
+          //check above with exception
+          if (coord.split("")[0] != "A") {
+            //building coordinate to check
+            let theLetterBefore = String.fromCharCode(
+              coord.split("")[0].charCodeAt(0) - 1
+            );
+
+            let coordAbove = theLetterBefore + coord.split("")[1];
+
+            if (this.coordinatesOfMyShips[coordAbove] != "unoccupied") {
+              console.log(`need at least one space above coord ${coord}`);
+              console.log(`coord is ${coord}`, `coord above is ${coordAbove}`);
+              return false;
+            }
+          }
+
+          //check below with exception
+          if (coord.split("")[0] != "J") {
+            //building coordinate to check
+            let theLetterAfter = String.fromCharCode(
+              coord.split("")[0].charCodeAt(0) + 1
+            );
+
+            let coordBelow = theLetterAfter + coord.split("")[1];
+
+            if (this.coordinatesOfMyShips[coordBelow] != "unoccupied") {
+              console.log(`need at least one space below coord ${coord}`);
+              console.log(`coord is ${coord}`, `coord below is ${coordBelow}`);
+              return false;
+            }
+          }
+
           //
           if (index == coords.length - 1) {
             /**
@@ -355,8 +501,27 @@ function gameBoard() {
              *    -if possible (any number expect 10)
              *    check one number to the right.
              */
+            if (coord.split("")[1] != 10) {
+              let numberAfter = Number(coord.split("")[1]) + 1;
+              let coordToTheRight = coord.split("")[0] + numberAfter;
+
+              if (this.coordinatesOfMyShips[coordToTheRight] != "unoccupied") {
+                console.log(`need at least one space to the right of coord ${coord}`);
+                console.log(`coord is ${coord}`, `coord right is ${coordToTheRight}`);
+                return false;
+              }
+            }
           }
+
+          console.log(coord,'has space')
+          return true;
         });
+
+        console.log(doesEachCoordHaveSpace);
+
+        if(doesEachCoordHaveSpace == false){
+          return 'not enough space around ship'
+        }
       }
 
       let shipToPlace = ship(lengthOfShip, type, calculatedCoordinateRange);
