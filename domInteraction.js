@@ -54,13 +54,15 @@ function domInteractions(human, AI) {
         /**
          * use generateShipPlacementOptions function
          */
-        let shipPlaceMentOptions = generateShipPlacementOptions(player);
+        let shipPlaceMentOptions = generateShipPlacementOptions(player,playerType);
         //add shipPlacementOption
         // to gridOfHumansShips container element
         document
           .getElementById("gridOfHumansShips")
           .append(shipPlaceMentOptions);
       }
+
+      setShipsRandomly(player, playerType);
 
       if (playerType == "A.I") {
         /**
@@ -73,10 +75,11 @@ function domInteractions(human, AI) {
           .getElementById("gridOfAIEnemysShips")
           .append(gridForAttacksOnEnemyShips);
       }
+      setShipsRandomly(player, playerType);
     },
     placeShips() {},
     /**
-   * add event listners to gridOfEnemyShips
+     * add event listners to gridOfEnemyShips
    * take user input for attacking
    * 
    * For attacks, 
@@ -164,7 +167,7 @@ function generateGridElement() {
   return gridContainer;
 }
 
-function generateShipPlacementOptions(player) {
+function generateShipPlacementOptions(player,playerType) {
   /**
    * add ship placement option for player
    * manual drag and drop or random position button
@@ -230,23 +233,52 @@ function generateShipPlacementOptions(player) {
   placeShipsManualOptionButton.textContent = "manual";
 
   placeShipsRandomlyOptionButton.addEventListener("click", () => {
+    setShipsRandomly(player,playerType);
+  });
+
+  // todo create manual ship placementEvent.
+  placeShipsManualOptionButton.addEventListener("click", () => {});
+
+  // add buttons to container
+  shipPlacementOptionsContainer.append(shipPlacementMessage);
+  shipPlacementOptionsContainer.append(placeShipsRandomlyOptionButton);
+  shipPlacementOptionsContainer.append(placeShipsManualOptionButton);
+
+  //return the container element
+  return shipPlacementOptionsContainer;
+}
+
+
+function setShipsRandomly(player, playerType) {
+
+  if (playerType == "human") {
     //need to clear placement before randomizing it again.
     player.playersBoard.clearShipPlacements();
 
     //also need to clear ship elements from the grid.
-    let gridElementChildrenElementsArray = Array.from(document.querySelector("#gridOfHumansShips>.gridContainer").children);
+    let gridElementChildrenElementsArray = Array.from(
+      document.querySelector("#gridOfHumansShips>.gridContainer").children
+    );
 
     //clear ships off the grid
-    for (let index = 0; index < gridElementChildrenElementsArray.length; index++) {
+    for (
+      let index = 0;
+      index < gridElementChildrenElementsArray.length;
+      index++
+    ) {
       let element = gridElementChildrenElementsArray[index];
-      if(!(element.classList.contains("gridCoordiante")) &&
-      !(element.classList.contains('gridColumnLabel')) &&
-      !(element.classList.contains('gridRowLabel'))){
-        console.log(element,'\n\n\n');
+      if (
+        !element.classList.contains("gridCoordiante") &&
+        !element.classList.contains("gridColumnLabel") &&
+        !element.classList.contains("gridRowLabel")
+      ) {
+        console.log(element, "\n\n\n");
         element.remove();
       }
     }
+
     player.playersBoard.randomiseShipPlacements();
+
     console.log(player.playersBoard.armada, "humans ships");
     console.log(
       player.playersBoard.coordinatesOfMyShips,
@@ -254,29 +286,31 @@ function generateShipPlacementOptions(player) {
     );
 
     let shipElements = generateShipElementsOfTheGame(player);
+    console.log(shipElements, "shipElements");
     // console.log(player.playersBoard.coordinatesOfMyShips);
 
     for (const key in player.playersBoard.coordinatesOfMyShips) {
       if (player.playersBoard.coordinatesOfMyShips[key] != "unoccupied") {
-        if(player.playersBoard.coordinatesOfMyShips[key][1] == 0){
-          console.log('\n\n\n');
-          console.log(player.playersBoard.coordinatesOfMyShips[key],key);
-          console.log('\n\n\n');
-          
-          let typeOfShipElement = player.playersBoard.coordinatesOfMyShips[key][0].type;
-  
+        if (player.playersBoard.coordinatesOfMyShips[key][1] == 0) {
+          console.log("\n\n\n");
+          console.log(player.playersBoard.coordinatesOfMyShips[key], key);
+          console.log("\n\n\n");
+
+          let typeOfShipElement =
+            player.playersBoard.coordinatesOfMyShips[key][0].type;
+
           console.log(shipElements, "shipElements before splice");
-          console.log(shipElements.length,'length of ship elemetns array');
+          console.log(shipElements.length, "length of ship elemetns array");
 
           //
           let shipNeeded;
-          
+
           if (shipElements.length > 0) {
             //find location of ship index.
             let indexOfShipNeeded = shipElements.findIndex(
               (ship) => ship.classList[0] == typeOfShipElement
             );
-            
+
             //move from array and store in variable
             shipNeeded = shipElements.splice(indexOfShipNeeded, 1)[0];
           }
@@ -285,29 +319,32 @@ function generateShipPlacementOptions(player) {
           console.log(shipNeeded, "shipneeded");
 
           /**
-            use start and end coord of coordRange to figure out
-            orientation of ship.
-  
-            if they differ by letter but the numbers are the same
-           * then it spans vertically
-  
-            if they differ by number but letters are the same 
-            then is spans horizontally
-           */
+        use start and end coord of coordRange to figure out
+        orientation of ship.
+
+        if they differ by letter but the numbers are the same
+       * then it spans vertically
+
+        if they differ by number but letters are the same 
+        then is spans horizontally
+       */
           let shipsCoordianteRange =
             player.playersBoard.coordinatesOfMyShips[key][0].placement;
-  
+
           let startCoord = shipsCoordianteRange[0];
           let endCoord = shipsCoordianteRange[shipsCoordianteRange.length - 1];
-  
+
           let shipsOrientation;
-  
-          console.log(shipsCoordianteRange[0].split("")[0], "startCoord letter");
+
+          console.log(
+            shipsCoordianteRange[0].split("")[0],
+            "startCoord letter"
+          );
           console.log(
             shipsCoordianteRange[shipsCoordianteRange.length - 1].split("")[0],
             "endCoord letter"
           );
-  
+
           if (
             shipsCoordianteRange[0].split("")[0] ==
             shipsCoordianteRange[shipsCoordianteRange.length - 1].split("")[0]
@@ -322,7 +359,7 @@ function generateShipPlacementOptions(player) {
             );
             shipsOrientation = "vertical";
           }
-  
+
           /**
            * 2:use that data to set ship element's
            *   grid area prop like this,
@@ -345,20 +382,20 @@ function generateShipPlacementOptions(player) {
             console.log(shipNeeded, "horizontal");
             shipNeeded.style.gridArea = `${startCoord}/${startCoord}-start/${startCoord}-start/${endCoord}-end`;
           }
-  
+
           if (shipsOrientation == "vertical") {
             // grid area: startCoord-start/startCoord-start/endCoord-end/startCoord-start A1-start/A1-start/E1-end/A1-start
             console.log(shipNeeded, "vertical");
             shipNeeded.style.gridArea = `${startCoord}-start/${startCoord}-start/${endCoord}-end/${startCoord}-start`;
           }
-  
+
           /**
            * 3:set style so element overlaps the grid:
            *   set the z index to 1 so the elements is an
            *   a layer above the grid.
            *   and make sure the ship has a color show it shows up
            */
-  
+
           /**
            *  * 4:add all ships into gridOfHumansShips/gridContainer
            * so that each ship would be a sibling of the gridElements
@@ -366,25 +403,13 @@ function generateShipPlacementOptions(player) {
           document
             .querySelector("#gridOfHumansShips>.gridContainer")
             .append(shipNeeded);
-
-
-
-
         }
       }
     }
-  });
+  }
 
-  // todo create manual ship placementEvent.
-  placeShipsManualOptionButton.addEventListener("click", () => {});
-
-  // add buttons to container
-  shipPlacementOptionsContainer.append(shipPlacementMessage);
-  shipPlacementOptionsContainer.append(placeShipsRandomlyOptionButton);
-  shipPlacementOptionsContainer.append(placeShipsManualOptionButton);
-
-  //return the container element
-  return shipPlacementOptionsContainer;
+  if (playerType == "A.I") {
+  }
 }
 
 function generateShipElementsOfTheGame(player) {
