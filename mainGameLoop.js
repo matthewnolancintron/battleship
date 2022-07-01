@@ -90,10 +90,18 @@ import domInteractions from "./domInteraction.js";
     // set AI board:
     domInteractionObject.setBoardForAI(computerPlayer, "A.I");
     
+    /**
+     * need to update coordinatesOfEnemyShips
+     * for both human and AI
+     */
+    humanPlayer.playersBoard.coordinatesOfEnemyShips = computerPlayer.playersBoard.coordinatesOfMyShips;
+    computerPlayer.playersBoard.coordinatesOfEnemyShips = humanPlayer.playersBoard.coordinatesOfMyShips;
+    
     // 
     console.log(humanPlayer,'check the human player');
     console.log(computerPlayer,'check the computer player');
 
+    //todo check note book
     /**
      * The game loop should step through
      * the game turn by turn using only
