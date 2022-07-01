@@ -61,21 +61,15 @@ function domInteractions(human, AI) {
           .getElementById("gridOfHumansShips")
           .append(shipPlaceMentOptions);
       }
-
+      
+      console.log(player, playerType,'check inputs');
+      console.log(player.playersBoard,`check board of ${playerType}`);
       setShipsRandomly(player, playerType);
-
-      if (playerType == "A.I") {
-        /**
-         * A.I ships will be placed randomly automatically
-         * with out a button press
-         */
-
-        document.getElementById("gridOfAIsShips").append(gridForPlayerShips);
-        document
-          .getElementById("gridOfAIEnemysShips")
-          .append(gridForAttacksOnEnemyShips);
-      }
+    },
+    setBoardForAI(player,playerType){
       setShipsRandomly(player, playerType);
+      console.log(player, playerType,'check inputs');
+      console.log(player.playersBoard,`check board of ${playerType}`);
     },
     placeShips() {},
     /**
@@ -406,6 +400,8 @@ function setShipsRandomly(player, playerType) {
         }
       }
     }
+
+    console.log('?',playerType, player.playersBoard.armada, player.playersBoard.coordinatesOfMyShips);
   }
 
   if (playerType == "A.I") {

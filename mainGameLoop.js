@@ -87,10 +87,12 @@ import domInteractions from "./domInteraction.js";
      */
     domInteractionObject.displayGameBoardForPlayer(humanPlayer, "human");
 
-    // for development only
-    domInteractionObject.displayGameBoardForPlayer(computerPlayer, "A.I");
+    // set AI board:
+    domInteractionObject.setBoardForAI(computerPlayer, "A.I");
     
-    //...
+    // 
+    console.log(humanPlayer,'check the human player');
+    console.log(computerPlayer,'check the computer player');
 
     /**
      * The game loop should step through

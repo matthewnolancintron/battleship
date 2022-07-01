@@ -157,11 +157,11 @@ function gameBoard() {
           return "out of bounds ship can't be placed there";
         } else {
           //create coordiante range
-          console.log(lengthOfShip, "lengthOfShip");
+          // console.log(lengthOfShip, "lengthOfShip");
           calculatedCoordinateRange = Array.from(Array(10).keys(), (x) => x + 1)
             .slice(startingCoordianteNumber, calculatedEndCoordinate)
             .map((x) => `${startingCoordinate.split("")[0]}${x}`);
-          console.log("horizontal coord range", calculatedCoordinateRange);
+          // console.log("horizontal coord range", calculatedCoordinateRange);
         }
       } else if (directionOfPlacement == "vertical") {
         /**
@@ -201,7 +201,7 @@ function gameBoard() {
         }
 
         if (isOutOfBounds) {
-          console.log("out of bounds");
+          // console.log("out of bounds");
           return "out of bounds ship can't be placed there";
         } else {
           ship;
@@ -213,7 +213,7 @@ function gameBoard() {
               lengthOfShip + startingCoordianteLetterPosition
             )
             .map((x) => `${x}${startingCoordinate.split("")[1]}`);
-          console.log("vertical coord range", calculatedCoordinateRange);
+          // console.log("vertical coord range", calculatedCoordinateRange);
         }
       }
 
@@ -280,7 +280,7 @@ function gameBoard() {
 
         let doesEachCoordHaveSpace = calculatedCoordinateRange.every(
           (coord, index, coords) => {
-            console.log(this.coordinatesOfMyShips[coord], "coord on grid v");
+            // console.log(this.coordinatesOfMyShips[coord], "coord on grid v");
             //first chord
             if (index == 0) {
               /**
@@ -323,12 +323,12 @@ function gameBoard() {
 
 
                   if (this.coordinatesOfMyShips[topLeftDiagonal] != "unoccupied") {
-                    console.log(`need at least one space above coord ${coord}`);
+                    // console.log(`need at least one space above coord ${coord}`);
 
-                    console.log(
-                      `coord is ${coord}`,
-                      `coord top left diagonal is ${topLeftDiagonal}`
-                    );
+                    // console.log(
+                    //   `coord is ${coord}`,
+                    //   `coord top left diagonal is ${topLeftDiagonal}`
+                    // );
 
                     return false;
                   } else {
@@ -343,12 +343,12 @@ function gameBoard() {
                   let topRightDiagonal = theLetterBefore + theNumberAfter;
 
                   if (this.coordinatesOfMyShips[topRightDiagonal] != "unoccupied") {
-                    console.log(`need at least one space above coord ${coord}`);
+                    // console.log(`need at least one space above coord ${coord}`);
 
-                    console.log(
-                      `coord is ${coord}`,
-                      `coord top left diagonal is ${topRightDiagonal}`
-                    );
+                    // console.log(
+                    //   `coord is ${coord}`,
+                    //   `coord top left diagonal is ${topRightDiagonal}`
+                    // );
 
                     return false;
                   } else {
@@ -360,12 +360,12 @@ function gameBoard() {
                 let coordAbove = theLetterBefore + coord.split("")[1];
 
                 if (this.coordinatesOfMyShips[coordAbove] != "unoccupied") {
-                  console.log(`need at least one space above coord ${coord}`);
+                  // console.log(`need at least one space above coord ${coord}`);
 
-                  console.log(
-                    `coord is ${coord}`,
-                    `coord above is ${coordAbove}`
-                  );
+                  // console.log(
+                  //   `coord is ${coord}`,
+                  //   `coord above is ${coordAbove}`
+                  // );
 
                   return false;
                 } else {
@@ -390,14 +390,14 @@ function gameBoard() {
               let coordToTheLeft = coord.split("")[0] + numberBefore;
 
               if (this.coordinatesOfMyShips[coordToTheLeft] != "unoccupied") {
-                console.log(
-                  `need at least one space to the left of coord ${coord}`
-                );
+                // console.log(
+                //   `need at least one space to the left of coord ${coord}`
+                // );
 
-                console.log(
-                  `coord is ${coord}`,
-                  `coord to the left is ${coordToTheLeft}`
-                );
+                // console.log(
+                //   `coord is ${coord}`,
+                //   `coord to the left is ${coordToTheLeft}`
+                // );
                 return false;
               } else {
                 perimeterCoordinates.push(coordToTheLeft);
@@ -410,12 +410,12 @@ function gameBoard() {
               let coordToTheRight = coord.split("")[0] + numberAfter;
 
               if (this.coordinatesOfMyShips[coordToTheRight] != "unoccupied") {
-                console.log(`need at least one space to the right ${coord}`);
+                // console.log(`need at least one space to the right ${coord}`);
 
-                console.log(
-                  `coord is ${coord}`,
-                  `coord to the right is ${coordToTheRight}`
-                );
+                // console.log(
+                //   `coord is ${coord}`,
+                //   `coord to the right is ${coordToTheRight}`
+                // );
                 return false;
               } else {
                 perimeterCoordinates.push(coordToTheRight);
@@ -443,14 +443,14 @@ function gameBoard() {
                   let bottomLeftDiagonal = theLetterAfter + theNumberBefore; 
 
                   if (this.coordinatesOfMyShips[bottomLeftDiagonal] != "unoccupied") {
-                    console.log(
-                      `need at least one space below of coord ${coord}`
-                    );
+                    // console.log(
+                    //   `need at least one space below of coord ${coord}`
+                    // );
   
-                    console.log(
-                      `coord is ${coord}`,
-                      `coord bottomLeftDiagonal is ${bottomLeftDiagonal}`
-                    );
+                    // console.log(
+                    //   `coord is ${coord}`,
+                    //   `coord bottomLeftDiagonal is ${bottomLeftDiagonal}`
+                    // );
                     return false;
                   } else {
                     perimeterCoordinates.push(bottomLeftDiagonal);
@@ -461,17 +461,17 @@ function gameBoard() {
                 if(coord.split('')[1] != 10){
                   let theNumberAfter = Number(coord.split("")[1]) + 1;
                   let bottomRightDiagonal = theLetterAfter + theNumberAfter;
-                  console.log(coord,bottomRightDiagonal,'00000')
+                  // console.log(coord,bottomRightDiagonal,'00000')
 
                   if (this.coordinatesOfMyShips[bottomRightDiagonal] != "unoccupied") {
-                    console.log(
-                      `need at least one space below of coord ${coord}`
-                    );
+                    // console.log(
+                    //   `need at least one space below of coord ${coord}`
+                    // );
   
-                    console.log(
-                      `coord is ${coord}`,
-                      `coord bottomLeftDiagonal is ${bottomRightDiagonal}`
-                    );
+                    // console.log(
+                    //   `coord is ${coord}`,
+                    //   `coord bottomLeftDiagonal is ${bottomRightDiagonal}`
+                    // );
                     return false;
                   } else {
                     perimeterCoordinates.push(bottomRightDiagonal);
@@ -480,14 +480,14 @@ function gameBoard() {
 
                 //below check
                 if (this.coordinatesOfMyShips[coordBelow] != "unoccupied") {
-                  console.log(
-                    `need at least one space below of coord ${coord}`
-                  );
+                  // console.log(
+                  //   `need at least one space below of coord ${coord}`
+                  // );
 
-                  console.log(
-                    `coord is ${coord}`,
-                    `coord below is ${coordBelow}`
-                  );
+                  // console.log(
+                  //   `coord is ${coord}`,
+                  //   `coord below is ${coordBelow}`
+                  // );
                   return false;
                 } else {
                   perimeterCoordinates.push(coordBelow);
@@ -496,12 +496,12 @@ function gameBoard() {
             }
 
             //all condition above were not met so return true coord has space around it
-            console.log(coord, "has space");
+            // console.log(coord, "has space");
             return true;
           }
         );
 
-        console.log(doesEachCoordHaveSpace);
+        // console.log(doesEachCoordHaveSpace);
         if (doesEachCoordHaveSpace == false) {
           return "doesn't have at least one grid unit of free space around perimeter of the ship";
         }
@@ -517,7 +517,7 @@ function gameBoard() {
          */
         let doesEachCoordHaveSpace = calculatedCoordinateRange.every(
           (coord, index, coords) => {
-            console.log(this.coordinatesOfMyShips[coord], "coord on grid h");
+            // console.log(this.coordinatesOfMyShips[coord], "coord on grid h");
             //
             if (index == 0) {
               /**
@@ -542,13 +542,13 @@ function gameBoard() {
                 if(coord.split('')[0] != "A"){
                   let topLeftDiagonal = theLetterBefore + numberBefore;
                   if (this.coordinatesOfMyShips[topLeftDiagonal] != "unoccupied") {
-                    console.log(
-                      `need at least one space to the 0topleftdiagonal of coord ${coord}`
-                    );
-                    console.log(
-                      `coord is ${coord}`,
-                      `topLeftDiagonal is ${topLeftDiagonal}`
-                    );
+                    // console.log(
+                    //   `need at least one space to the 0topleftdiagonal of coord ${coord}`
+                    // );
+                    // console.log(
+                    //   `coord is ${coord}`,
+                    //   `topLeftDiagonal is ${topLeftDiagonal}`
+                    // );
                     return false;
                   } else {
                     perimeterCoordinates.push(topLeftDiagonal);
@@ -559,13 +559,13 @@ function gameBoard() {
                 if(coord.split('')[0] != 'J'){
                   let bottomLeftDiagonal = theLetterAfter + numberBefore;
                   if (this.coordinatesOfMyShips[bottomLeftDiagonal] != "unoccupied") {
-                    console.log(
-                      `need at least one space to the 0bottomRight of coord ${coord}`
-                    );
-                    console.log(
-                      `coord is ${coord}`,
-                      `bottomLeftDiagonal is ${bottomLeftDiagonal}`
-                    );
+                    // console.log(
+                    //   `need at least one space to the 0bottomRight of coord ${coord}`
+                    // );
+                    // console.log(
+                    //   `coord is ${coord}`,
+                    //   `bottomLeftDiagonal is ${bottomLeftDiagonal}`
+                    // );
                     return false;
                   } else {
                     perimeterCoordinates.push(bottomLeftDiagonal);
@@ -574,13 +574,13 @@ function gameBoard() {
 
 
                 if (this.coordinatesOfMyShips[coordToTheLeft] != "unoccupied") {
-                  console.log(
-                    `need at least one space to the left of coord ${coord}`
-                  );
-                  console.log(
-                    `coord is ${coord}`,
-                    `coord left is ${coordToTheLeft}`
-                  );
+                  // console.log(
+                  //   `need at least one space to the left of coord ${coord}`
+                  // );
+                  // console.log(
+                  //   `coord is ${coord}`,
+                  //   `coord left is ${coordToTheLeft}`
+                  // );
                   return false;
                 } else {
                   perimeterCoordinates.push(coordToTheLeft);
@@ -607,11 +607,11 @@ function gameBoard() {
               let coordAbove = theLetterBefore + coord.split("")[1];
 
               if (this.coordinatesOfMyShips[coordAbove] != "unoccupied") {
-                console.log(`need at least one space above coord ${coord}`);
-                console.log(
-                  `coord is ${coord}`,
-                  `coord above is ${coordAbove}`
-                );
+                // console.log(`need at least one space above coord ${coord}`);
+                // console.log(
+                //   `coord is ${coord}`,
+                //   `coord above is ${coordAbove}`
+                // );
                 return false;
               } else {
                 perimeterCoordinates.push(coordAbove);
@@ -628,11 +628,11 @@ function gameBoard() {
               let coordBelow = theLetterAfter + coord.split("")[1];
 
               if (this.coordinatesOfMyShips[coordBelow] != "unoccupied") {
-                console.log(`need at least one space below coord ${coord}`);
-                console.log(
-                  `coord is ${coord}`,
-                  `coord below is ${coordBelow}`
-                );
+                // console.log(`need at least one space below coord ${coord}`);
+                // console.log(
+                //   `coord is ${coord}`,
+                //   `coord below is ${coordBelow}`
+                // );
                 return false;
               } else {
                 perimeterCoordinates.push(coordBelow);
@@ -662,13 +662,13 @@ function gameBoard() {
                 if(coord.split('')[0] != "A"){
                   let topRightDiagonal = theLetterBefore + numberAfter;//
                   if (this.coordinatesOfMyShips[topRightDiagonal] != "unoccupied") {
-                    console.log(
-                      `need at least one space to the left of coord ${coord}`
-                    );
-                    console.log(
-                      `coord is ${coord}`,
-                      `topRightDiagonal is ${topRightDiagonal}`
-                    );
+                    // console.log(
+                    //   `need at least one space to the left of coord ${coord}`
+                    // );
+                    // console.log(
+                    //   `coord is ${coord}`,
+                    //   `topRightDiagonal is ${topRightDiagonal}`
+                    // );
                     return false;
                   } else {
                     perimeterCoordinates.push(topRightDiagonal);
@@ -679,13 +679,13 @@ function gameBoard() {
                 if(coord.split('')[0] != 'J'){
                   let bottomRightDiagonal = theLetterAfter + numberAfter;
                   if (this.coordinatesOfMyShips[bottomRightDiagonal] != "unoccupied") {
-                    console.log(
-                      `need at least one space to the left of coord ${coord}`
-                    );
-                    console.log(
-                      `coord is ${coord}`,
-                      `bottomRightDiagonal is ${bottomRightDiagonal}`
-                    );
+                    // console.log(
+                    //   `need at least one space to the left of coord ${coord}`
+                    // );
+                    // console.log(
+                    //   `coord is ${coord}`,
+                    //   `bottomRightDiagonal is ${bottomRightDiagonal}`
+                    // );
                     return false;
                   } else {
                     perimeterCoordinates.push(bottomRightDiagonal);
@@ -699,13 +699,13 @@ function gameBoard() {
                 if (
                   this.coordinatesOfMyShips[coordToTheRight] != "unoccupied"
                 ) {
-                  console.log(
-                    `need at least one space to the right of coord ${coord}`
-                  );
-                  console.log(
-                    `coord is ${coord}`,
-                    `coord right is ${coordToTheRight}`
-                  );
+                  // console.log(
+                  //   `need at least one space to the right of coord ${coord}`
+                  // );
+                  // console.log(
+                  //   `coord is ${coord}`,
+                  //   `coord right is ${coordToTheRight}`
+                  // );
                   return false;
                 } else {
                   perimeterCoordinates.push(coordToTheRight);
@@ -713,23 +713,23 @@ function gameBoard() {
               }
             }
 
-            console.log(coord, "has space");
+            // console.log(coord, "has space");
             return true;
           }
         );
 
-        console.log(doesEachCoordHaveSpace);
+        // console.log(doesEachCoordHaveSpace);
 
         if (doesEachCoordHaveSpace == false) {
           return "not enough space around ship";
         }
       }
 
-      console.log(
-        perimeterCoordinates,
-        "perimeter of ship at",
-        calculatedCoordinateRange
-      );
+      // console.log(
+      //   perimeterCoordinates,
+      //   "perimeter of ship at",
+      //   calculatedCoordinateRange
+      // );
       let shipToPlace = ship(lengthOfShip, type, calculatedCoordinateRange);
       let isUnocupied = calculatedCoordinateRange.every(
         (x) => this.coordinatesOfMyShips[x] == "unoccupied"
@@ -741,11 +741,11 @@ function gameBoard() {
          * available at each coordiante it's located
          */
         let positionOfShipNumber = 0;
-        console.log(calculatedCoordinateRange, "coord range");
+        // console.log(calculatedCoordinateRange, "coord range");
         calculatedCoordinateRange.forEach(
           //place the ship and it's position
           (x) => {
-            console.log(positionOfShipNumber, "pos of ship num");
+            // console.log(positionOfShipNumber, "pos of ship num");
             this.coordinatesOfMyShips[x] = [shipToPlace, positionOfShipNumber];
             positionOfShipNumber++;
           }
@@ -783,10 +783,10 @@ function gameBoard() {
           this.alreadyUsedPossibleStartingCoordinates.push(x);
         });
 
-        console.log(
-          this.alreadyUsedPossibleStartingCoordinates,
-          "used coords - successfull placement"
-        );
+        // console.log(
+        //   this.alreadyUsedPossibleStartingCoordinates,
+        //   "used coords - successfull placement"
+        // );
 
         //remove already used starting coordiantes from the pool of choices/possibilities
         // possibleStartingCoordiantes = possibleStartingCoordiantes.filter(x=>x!="coord to remove");
@@ -800,10 +800,10 @@ function gameBoard() {
             );
           });
 
-        console.log(this.possibleStartingCoordiantes);
-        ("possibleStaring coords - successfull placement");
+        // console.log(this.possibleStartingCoordiantes);
+        // ("possibleStaring coords - successfull placement");
 
-        console.log("placement succesfull");
+        // console.log("placement succesfull");
 
         return "placement succesfull";
       } else {
@@ -851,31 +851,31 @@ function gameBoard() {
       let possibleDirectionsOfPlacement = ["horizontal", "vertical"];
 
       for (let pos = 0; pos < this.shipsOfTheGame.length; pos++) {
-        console.log(
-          `on ship type ${pos + 1} out of ${
-            this.shipsOfTheGame.length
-          } ship types`
-        );
+        // console.log(
+        //   `on ship type ${pos + 1} out of ${
+        //     this.shipsOfTheGame.length
+        //   } ship types`
+        // );
 
-        console.log(this.shipsOfTheGame, "?");
-        console.log(this.shipsOfTheGame[pos], "ship type");
-        console.log(
-          this.shipsOfTheGame[pos].num,
-          "num ships",
-          this.shipsOfTheGame[pos].typeOfShip
-        );
+        // console.log(this.shipsOfTheGame, "?");
+        // console.log(this.shipsOfTheGame[pos], "ship type");
+        // console.log(
+        //   this.shipsOfTheGame[pos].num,
+        //   "num ships",
+        //   this.shipsOfTheGame[pos].typeOfShip
+        // );
 
         let shipPlacementNotSucceful = true;
 
         //place ship.num number of that ship
         for (let index = 0; index < this.shipsOfTheGame[pos].num; index++) {
-          console.log("\n", "\n");
-          console.log(
-            this.shipsOfTheGame[pos].typeOfShip,
-            index,
-            "index----\n\n\n"
-          );
-          console.log("\n");
+          // console.log("\n", "\n");
+          // console.log(
+          //   this.shipsOfTheGame[pos].typeOfShip,
+          //   index,
+          //   "index----\n\n\n"
+          // );
+          // console.log("\n");
 
           // reset shipPlacementNotSucceful boolean for ship placement attempt
           shipPlacementNotSucceful = true;
@@ -906,23 +906,23 @@ function gameBoard() {
             );
 
             if (shipPlacementAttemptForHuman == "placement succesfull") {
-              console.log(this.shipsOfTheGame[pos], "was placed!");
-              console.log(
-                this.shipsOfTheGame[pos].num - (index + 1),
-                " ",
-                this.shipsOfTheGame[pos].typeOfShip,
-                " left to place"
-              );
+              // console.log(this.shipsOfTheGame[pos], "was placed!");
+              // console.log(
+              //   this.shipsOfTheGame[pos].num - (index + 1),
+              //   " ",
+              //   this.shipsOfTheGame[pos].typeOfShip,
+              //   " left to place"
+              // );
               shipPlacementNotSucceful = false;
             } else {
               shipPlacementNotSucceful = true;
-              console.log("did not place ship");
+              // console.log("did not place ship");
             }
           }
         }
       }
 
-      console.log(this.shipsOfTheGame, "shipsOfTheGame");
+      // console.log(this.shipsOfTheGame, "shipsOfTheGame");
     },
 
     clearShipPlacements() {
