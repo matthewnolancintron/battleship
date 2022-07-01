@@ -262,6 +262,11 @@ function gameBoard() {
        */
       // console.log(this.coordinatesOfMyShips, "coordiantes");
 
+      //no overlaping pieces or setting on a pecies permieter
+      if(this.alreadyUsedPossibleStartingCoordinates.includes(calculatedCoordinateRange[0])){
+        return 'coordiante already been used'
+      }
+
       let perimeterCoordinates = [];
 
       if (directionOfPlacement == "vertical") {
@@ -456,6 +461,7 @@ function gameBoard() {
                 if(coord.split('')[1] != 10){
                   let theNumberAfter = Number(coord.split("")[1]) + 1;
                   let bottomRightDiagonal = theLetterAfter + theNumberAfter;
+                  console.log(coord,bottomRightDiagonal,'00000')
 
                   if (this.coordinatesOfMyShips[bottomRightDiagonal] != "unoccupied") {
                     console.log(
@@ -537,7 +543,7 @@ function gameBoard() {
                   let topLeftDiagonal = theLetterBefore + numberBefore;
                   if (this.coordinatesOfMyShips[topLeftDiagonal] != "unoccupied") {
                     console.log(
-                      `need at least one space to the left of coord ${coord}`
+                      `need at least one space to the 0topleftdiagonal of coord ${coord}`
                     );
                     console.log(
                       `coord is ${coord}`,
@@ -554,7 +560,7 @@ function gameBoard() {
                   let bottomLeftDiagonal = theLetterAfter + numberBefore;
                   if (this.coordinatesOfMyShips[bottomLeftDiagonal] != "unoccupied") {
                     console.log(
-                      `need at least one space to the left of coord ${coord}`
+                      `need at least one space to the 0bottomRight of coord ${coord}`
                     );
                     console.log(
                       `coord is ${coord}`,
@@ -671,7 +677,7 @@ function gameBoard() {
 
                 // check bottomRight diagonal horizontal check
                 if(coord.split('')[0] != 'J'){
-                  let bottomRightDiagonal = theLetterAfter + theNumberBefore;//
+                  let bottomRightDiagonal = theLetterAfter + numberAfter;
                   if (this.coordinatesOfMyShips[bottomRightDiagonal] != "unoccupied") {
                     console.log(
                       `need at least one space to the left of coord ${coord}`
