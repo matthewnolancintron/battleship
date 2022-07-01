@@ -432,7 +432,7 @@ function gameBoard() {
 
                 let coordBelow = theLetterAfter + coord.split("")[1];
 
-                // bottom diaganal checks...
+                // bottom diaganal checks
                 if(coord.split('')[1] != 1){
                   let theNumberBefore = Number(coord.split("")[1]) - 1;
                   let bottomLeftDiagonal = theLetterAfter + theNumberBefore; 
@@ -509,30 +509,6 @@ function gameBoard() {
          * with expections to A,J with above and below checks
          * and expection to 1,10 with left and right checks
          */
-
-        /**
-         * TODO: forgot to check for diagonal free space too
-         * if vertical:
-         * the ends first pos and last pos will need to have diagonals checked
-         *
-         * if vertical and if pos is first pos
-         *  if pos coord number doesn't equal 1 or 10
-         *  or letter doesn't equal A
-         *    then check top left diagonal cooridnate
-         *      from first coordinate go up one letter (previous in the alphabet)
-         *      and back by one number
-         *    also check top right diagonal coordinate
-         *      from first coordiante go up one letter (prevoius in the alphabet)
-         *      and forward one number
-         *
-         * if vertical and if pos is last pos
-         *   if pos coord number doesn't equal 1 or 10 or letter doesn't equal J
-         *    then check bottom left diagonal coordiante one letter down (next in the alphabet)
-         *    and back by one number
-         *    also check bottom right diagonal coordiante one letter down (next in the alphabet)
-         *    and forward by one number
-         */
-
         let doesEachCoordHaveSpace = calculatedCoordinateRange.every(
           (coord, index, coords) => {
             console.log(this.coordinatesOfMyShips[coord], "coord on grid h");
@@ -545,7 +521,51 @@ function gameBoard() {
                */
               if (coord.split("")[1] != 1) {
                 let numberBefore = Number(coord.split("")[1]) - 1;
+
                 let coordToTheLeft = coord.split("")[0] + numberBefore;
+
+                let theLetterBefore = String.fromCharCode(
+                  coord.split("")[0].charCodeAt(0) - 1
+                );
+
+                let theLetterAfter = String.fromCharCode(
+                  coord.split("")[0].charCodeAt(0) + 1
+                );
+
+                // diagonal 
+                if(coord.split('')[0] != "A"){
+                  let topLeftDiagonal = theLetterBefore + numberBefore;
+                  if (this.coordinatesOfMyShips[topLeftDiagonal] != "unoccupied") {
+                    console.log(
+                      `need at least one space to the left of coord ${coord}`
+                    );
+                    console.log(
+                      `coord is ${coord}`,
+                      `topLeftDiagonal is ${topLeftDiagonal}`
+                    );
+                    return false;
+                  } else {
+                    perimeterCoordinates.push(topLeftDiagonal);
+                  }
+                }
+
+                // check bottomLeft diagonal horizontal check
+                if(coord.split('')[0] != 'J'){
+                  let bottomLeftDiagonal = theLetterAfter + numberBefore;
+                  if (this.coordinatesOfMyShips[bottomLeftDiagonal] != "unoccupied") {
+                    console.log(
+                      `need at least one space to the left of coord ${coord}`
+                    );
+                    console.log(
+                      `coord is ${coord}`,
+                      `bottomLeftDiagonal is ${bottomLeftDiagonal}`
+                    );
+                    return false;
+                  } else {
+                    perimeterCoordinates.push(bottomLeftDiagonal);
+                  }
+                }
+
 
                 if (this.coordinatesOfMyShips[coordToTheLeft] != "unoccupied") {
                   console.log(
@@ -623,6 +643,51 @@ function gameBoard() {
                */
               if (coord.split("")[1] != 10) {
                 let numberAfter = Number(coord.split("")[1]) + 1;
+                let theNumberBefore = Number(coord.split("")[1]) - 1;
+
+                let theLetterBefore = String.fromCharCode(
+                  coord.split("")[0].charCodeAt(0) - 1
+                );
+                let theLetterAfter = String.fromCharCode(
+                  coord.split("")[0].charCodeAt(0) + 1
+                );
+
+                // check topRight diagonal horizontal check
+                if(coord.split('')[0] != "A"){
+                  let topRightDiagonal = theLetterBefore + numberAfter;//
+                  if (this.coordinatesOfMyShips[topRightDiagonal] != "unoccupied") {
+                    console.log(
+                      `need at least one space to the left of coord ${coord}`
+                    );
+                    console.log(
+                      `coord is ${coord}`,
+                      `topRightDiagonal is ${topRightDiagonal}`
+                    );
+                    return false;
+                  } else {
+                    perimeterCoordinates.push(topRightDiagonal);
+                  }
+                }
+
+                // check bottomRight diagonal horizontal check
+                if(coord.split('')[0] != 'J'){
+                  let bottomRightDiagonal = theLetterAfter + theNumberBefore;//
+                  if (this.coordinatesOfMyShips[bottomRightDiagonal] != "unoccupied") {
+                    console.log(
+                      `need at least one space to the left of coord ${coord}`
+                    );
+                    console.log(
+                      `coord is ${coord}`,
+                      `bottomRightDiagonal is ${bottomRightDiagonal}`
+                    );
+                    return false;
+                  } else {
+                    perimeterCoordinates.push(bottomRightDiagonal);
+                  }      
+                }
+
+
+
                 let coordToTheRight = coord.split("")[0] + numberAfter;
 
                 if (
