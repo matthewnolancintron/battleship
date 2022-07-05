@@ -49,17 +49,20 @@ body{
     */
     display: grid;
     grid-template-columns: repeat(2,1fr);
+    height: inherit;
+    gap: 10vw;
+    height: inherit;
  
 }
 
 #gridOfHumansShips,
-#gridOfHumansEnemysShips,
-#gridOfAIEnemysShips,#gridOfAIsShips
+#gridOfHumansEnemysShips
 {
     background-color: lightseagreen;
     display: grid;
     justify-content: stretch;
     align-items: stretch;
+    
 }
 
 #gridOfHumansShips>h1,
@@ -69,6 +72,11 @@ body{
 {
     margin: 0;
     text-align: center;
+}
+
+#gridOfHumansShips>h1{
+    height: 10px;
+
 }
 
 /* button of placeing ships */
@@ -89,6 +97,11 @@ body{
 /*  */
 .manualPlacementOption{
 
+}
+
+/*  */
+.confirmPlacementButton{
+    
 }
 
 /* class for ships elements */
@@ -183,14 +196,6 @@ size is equal to one grid unit
      */
      display: grid;
      grid-template-columns: repeat(2,1fr);
-}
-
-#gridOfAIsShips{
-
-}
-
-#gridOfAIEnemysShips{
-  
 }
 
 
