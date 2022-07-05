@@ -24,11 +24,11 @@ import domInteractions from "./domInteraction.js";
  */
   let computerPlayer = player("A.I");
 
-  console.log("create players", humanPlayer, computerPlayer);
+  // console.log("create players", humanPlayer, computerPlayer);
 
   //populate gameBoards for both players
-  console.log(humanPlayer.playersBoard, "humansBoard");
-  console.log(computerPlayer.playersBoard, "computers board");
+  // console.log(humanPlayer.playersBoard, "humansBoard");
+  // console.log(computerPlayer.playersBoard, "computers board");
 
   //todo might move creation
   //of ships types to the ship module somehow.
@@ -63,17 +63,17 @@ import domInteractions from "./domInteraction.js";
    computerPlayer.playersBoard.randomiseShipPlacements();
 
   //check players aramdas
-  console.log(humanPlayer.playersBoard.armada, "humans ships");
-  console.log(
-    humanPlayer.playersBoard.coordinatesOfMyShips,
-    "placement of ships for human"
-  );
+  // console.log(humanPlayer.playersBoard.armada, "humans ships");
+  // console.log(
+    // humanPlayer.playersBoard.coordinatesOfMyShips,
+    // "placement of ships for human"
+  // );
 
-  console.log(computerPlayer.playersBoard.armada, "AI ships");
-  console.log(
-    computerPlayer.playersBoard.coordinatesOfMyShips,
-    "placement of ships for A.I"
-  );
+  // console.log(computerPlayer.playersBoard.armada, "AI ships");
+  // console.log(
+    // computerPlayer.playersBoard.coordinatesOfMyShips,
+    // "placement of ships for A.I"
+  // );
   //end of intial game set up
 
   //rest of the game loop takes place in this event.
@@ -88,20 +88,49 @@ import domInteractions from "./domInteraction.js";
     domInteractionObject.displayGameBoardForPlayer(humanPlayer, "human");
 
     // set AI board:
-    domInteractionObject.setBoardForAI(computerPlayer, "A.I");
+    //domInteractionObject.setBoardForAI(computerPlayer, "A.I");
     
     /**
      * need to update coordinatesOfEnemyShips
      * for both human and AI
+     * 
+     * todo: keep this data updated and synced
      */
     humanPlayer.playersBoard.coordinatesOfEnemyShips = computerPlayer.playersBoard.coordinatesOfMyShips;
     computerPlayer.playersBoard.coordinatesOfEnemyShips = humanPlayer.playersBoard.coordinatesOfMyShips;
     
+
     // 
     console.log(humanPlayer,'check the human player');
     console.log(computerPlayer,'check the computer player');
 
-    //todo check note book
+
+    /**
+     * game starts when human player
+     * confirms ship placement options
+     */
+
+    domInteractionObject.startGame();
+    // start game with setting turn to either pc or human
+    //randomly
+    if(humanPlayer.isTurn){
+      //do stuff
+      console.log('humans turn');
+      //end turn
+      humanPlayer.isTurn = false;
+    } else {
+      computerPlayer.isTurn = true;
+    }
+
+    if(computerPlayer.isTurn){
+      //do stuff
+      console.log('computers turn')
+      //end turn
+      computerPlayer.isTurn = false;
+    }
+
+
+    
     /**
      * The game loop should step through
      * the game turn by turn using only
