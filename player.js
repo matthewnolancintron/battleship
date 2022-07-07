@@ -47,6 +47,17 @@ function player(type) {
            */
           if (!this.attackCoordinateLog.includes(coordianteToAttack)) {
             this.attackCoordinateLog.push(coordianteToAttack);
+            /**
+             * check if ship is at coord
+             */
+            let infoAtCooridanteOfAttack = this.playersBoard.coordinatesOfEnemyShips[coordianteToAttack]; 
+            
+            console.log(infoAtCooridanteOfAttack)
+            if(infoAtCooridanteOfAttack == "unoccupied"){
+              return 'miss';
+            }
+            
+
             return coordianteToAttack;
           } else {
             return "coordiante already attacked";

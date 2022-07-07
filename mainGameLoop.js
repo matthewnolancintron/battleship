@@ -16,13 +16,24 @@ import domInteractions from "./domInteraction.js";
   let humanPlayer = player("human");
 
   /**
- * todo:optional
- * polish the intelligence of
- * the computer player by
- * having it try adjacent
- * slots after getting a ‘hit’.
- */
+   * todo:optional
+   * polish the intelligence of
+   * the computer player by
+   * having it try adjacent
+   * slots after getting a ‘hit’.
+   */
   let computerPlayer = player("A.I");
+
+
+  /**
+   * ideas for toogle turn loop
+   * create ref to players in the domInteractions object
+   * such that at the end of human's miss can toggle
+   * other players turn to on after turning humans off
+   * 
+   * or make it such that players have refrences to each other
+   * and can toogle each others turns on an off
+   */
 
   // console.log("create players", humanPlayer, computerPlayer);
 
@@ -49,30 +60,30 @@ import domInteractions from "./domInteraction.js";
    *
    * feature:
    * a button to placeships in random order for player
-   * 
+   *
    * moving random ship placement to the gameBoardObject
    * as a method. to be called here from the player object
-   * 
-   * *might decople the gameBoardObject from the player Object 
+   *
+   * *might decople the gameBoardObject from the player Object
    */
 
-   //this should be able to be called multiple times
-   humanPlayer.playersBoard.randomiseShipPlacements();
+  //this should be able to be called multiple times
+  humanPlayer.playersBoard.randomiseShipPlacements();
 
-   //this is called once for the A.I
-   computerPlayer.playersBoard.randomiseShipPlacements();
+  //this is called once for the A.I
+  computerPlayer.playersBoard.randomiseShipPlacements();
 
   //check players aramdas
   // console.log(humanPlayer.playersBoard.armada, "humans ships");
   // console.log(
-    // humanPlayer.playersBoard.coordinatesOfMyShips,
-    // "placement of ships for human"
+  // humanPlayer.playersBoard.coordinatesOfMyShips,
+  // "placement of ships for human"
   // );
 
   // console.log(computerPlayer.playersBoard.armada, "AI ships");
   // console.log(
-    // computerPlayer.playersBoard.coordinatesOfMyShips,
-    // "placement of ships for A.I"
+  // computerPlayer.playersBoard.coordinatesOfMyShips,
+  // "placement of ships for A.I"
   // );
   //end of intial game set up
 
@@ -89,48 +100,72 @@ import domInteractions from "./domInteraction.js";
 
     // set AI board:
     //domInteractionObject.setBoardForAI(computerPlayer, "A.I");
-    
+
     /**
      * need to update coordinatesOfEnemyShips
      * for both human and AI
-     * 
+     *
      * todo: keep this data updated and synced
      */
-    humanPlayer.playersBoard.coordinatesOfEnemyShips = computerPlayer.playersBoard.coordinatesOfMyShips;
-    computerPlayer.playersBoard.coordinatesOfEnemyShips = humanPlayer.playersBoard.coordinatesOfMyShips;
-    
+    humanPlayer.playersBoard.coordinatesOfEnemyShips =
+      computerPlayer.playersBoard.coordinatesOfMyShips;
+    computerPlayer.playersBoard.coordinatesOfEnemyShips =
+      humanPlayer.playersBoard.coordinatesOfMyShips;
 
-    // 
-    console.log(humanPlayer,'check the human player');
-    console.log(computerPlayer,'check the computer player');
-
+    //
+    console.log(humanPlayer, "check the human player");
+    console.log(computerPlayer, "check the computer player");
 
     /**
      * game starts when human player
      * confirms ship placement options
+     *
+     * add eventListner to confirm ship placement button
+     * to start game when placement is confirmed
      */
+    let whenGameStarts = domInteractionObject.startGame();
 
-    domInteractionObject.startGame();
-    // start game with setting turn to either pc or human
-    //randomly
-    if(humanPlayer.isTurn){
-      //do stuff
-      console.log('humans turn');
-      //end turn
-      humanPlayer.isTurn = false;
-    } else {
-      computerPlayer.isTurn = true;
-    }
+    whenGameStarts.then(() => {
+      console.log("game can start here");
+      // start game with setting turn to either pc or human
+      //randomly
+      
 
-    if(computerPlayer.isTurn){
-      //do stuff
-      console.log('computers turn')
-      //end turn
-      computerPlayer.isTurn = false;
-    }
+      if (humanPlayer.isTurn) {
+        console.log("humans turn");
+        /**
+         * enable oppents board to listen for clicks
+         */
+         document.querySelectorAll(
+          "#gridOfHumansEnemysShips>.gridContainer>.gridCoordiante"
+        ).forEach((element)=>{
+          element.style.pointerEvents = 'auto'
+        });
+
+        // computerPlayer.isTurn = true;
+
+      } else {
+        computerPlayer.isTurn = true;
+      }
+
+      if (computerPlayer.isTurn) {
+        //do stuff
+        console.log("computers turn");
+
+        // todo computer turn loop
+        /**
+         * 
+         */
+
+        //end turn
+        computerPlayer.isTurn = false;
+      }
 
 
-    
+      //when turn has ended set other start other players turn
+        
+
+    });
     /**
      * The game loop should step through
      * the game turn by turn using only
@@ -141,7 +176,6 @@ import domInteractions from "./domInteraction.js";
      * class or module that function should
      * belong to.
      */
-
 
     /**
      * todo:

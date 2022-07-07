@@ -4,16 +4,16 @@ import ship from "./ship.js";
 /**
  * might move some or all function outside
  * of the domInteraction Object into it
- * 
+ *
  * start game button should only be clickAble or
  * appear after player confirms ships
- * 
+ *
  * currently start game button is apart of dom interactions object
- * but confirm ship placement is not 
+ * but confirm ship placement is not
  * there is no way for either to communicate with each other
  * or for main game loop to utilze information/data from
  * confirmed ship placement.
- * 
+ *
  * there are also other issuse with having functions outside
  * of the return object like less control of game state
  * on certain actions and it's less clean to me
@@ -57,63 +57,82 @@ function domInteractions(human, AI) {
 
       let gridForPlayerShips = generateGridElement();
       let gridForAttacksOnEnemyShips = generateGridElement();
-      
-        /**
-         * add grids to correct location in the DOM
-         */
-        document.getElementById("gridOfHumansShips").append(gridForPlayerShips);
-        document
-          .getElementById("gridOfHumansEnemysShips")
-          .append(gridForAttacksOnEnemyShips);
 
-        /**
-        * 
-        */
-        let gridForAttacksOnEnemyShipsGridCoordinates = document.querySelectorAll('#gridOfHumansEnemysShips>.gridContainer>.gridCoordiante')
+      /**
+       * add grids to correct location in the DOM
+       */
+      document.getElementById("gridOfHumansShips").append(gridForPlayerShips);
+      document
+        .getElementById("gridOfHumansEnemysShips")
+        .append(gridForAttacksOnEnemyShips);
 
-        // todo loop over gridForAttacksOnEnemyShipsGridCoordinates and add event to each 'coord'
-        console.log(gridForAttacksOnEnemyShipsGridCoordinates);
-        gridForAttacksOnEnemyShipsGridCoordinates.forEach((element)=>{
-          element.addEventListener('click',()=>{
-            // console.log(element);
-            
+      /**
+       *
+       */
+      let gridForAttacksOnEnemyShipsGridCoordinates = document.querySelectorAll(
+        "#gridOfHumansEnemysShips>.gridContainer>.gridCoordiante"
+      );
+
+      // todo loop over gridForAttacksOnEnemyShipsGridCoordinates and add event to each 'coord'
+      console.log(gridForAttacksOnEnemyShipsGridCoordinates);
+      gridForAttacksOnEnemyShipsGridCoordinates.forEach((element) => {
+        element.addEventListener("click", () => {
+          /**
+           * attack A.I ships
+           * use data from A.I ships to update grid
+           * only attack If it's human's turn
+           */
+          let attackResult = player.attackEnemyGameBoard(
+            element.dataset.coordiante
+          );
+
+          if (attackResult == "miss") {
+            console.log('was miss');
             /**
-             * attack A.I ships
-             * use data from A.I ships to update grid
-             * only attack If it's human's turn
+             * disable oppenets board to make unclickable
              */
+            document
+              .querySelectorAll(
+                "#gridOfHumansEnemysShips>.gridContainer>.gridCoordiante"
+              )
+              .forEach((element) => {
+                element.style.pointerEvents = "none";
+              });
 
-          })
+            
+            // computerPlayer.isTurn = true;
+
+            // end players turn
+            player.isTurn = false;
+
+          }
         });
-
-        //add ships to gridForPlayerShips
-        /*
-         * use generateShipPlacementOptions function
-         */
-        let shipPlaceMentOptions = generateShipPlacementOptions(
-          player
-        );
-        //add shipPlacementOption
-        // to gridOfHumansShips container element
-        document
-          .getElementById("gridOfHumansShips")
-          .append(shipPlaceMentOptions);
-      
-      setShipsRandomly(player);
-    },
-    startGame(){
-      let startGameButton = document.createElement('button');
-      startGameButton.classList.add('startGameButton');
-      startGameButton.textContent = 'start game';
-
-      startGameButton.addEventListener('click',()=>{
-        //...
-        startGameButton.remove();
       });
 
-      document.getElementById('gameBoardContainer').append(startGameButton);
+      //add ships to gridForPlayerShips
+      /*
+       * use generateShipPlacementOptions function
+       */
+      let shipPlaceMentOptions = generateShipPlacementOptions(player);
+      //add shipPlacementOption
+      // to gridOfHumansShips container element
+      document.getElementById("gridOfHumansShips").append(shipPlaceMentOptions);
+
+      setShipsRandomly(player);
+    },
+    startGame() {
+      return new Promise(function (resolve, reject) {
+        let gameStartTriggerButton = document.querySelector(
+          ".confirmPlacementButton"
+        );
+
+        gameStartTriggerButton.addEventListener("click", () => {
+          resolve("");
+        });
+      });
     },
     placeShips() {},
+    
     /**
      * add event listners to gridOfEnemyShips
    * take user input for attacking
@@ -267,17 +286,16 @@ function generateShipPlacementOptions(player) {
   placeShipsManualOptionButton.classList.add("manualPlacementOption");
   placeShipsManualOptionButton.textContent = "manual";
 
-
   let confirmPlacementButton = document.createElement("button");
-  confirmPlacementButton.classList.add('confirmPlacementButton');
-  confirmPlacementButton.textContent = 'confirm'
-  confirmPlacementButton.addEventListener('click',()=>{
-    //remove placement options from the screen for the rest of the 
+  confirmPlacementButton.classList.add("confirmPlacementButton");
+  confirmPlacementButton.textContent = "confirm";
+  confirmPlacementButton.addEventListener("click", () => {
+    //remove placement options from the screen for the rest of the
     //match
     shipPlacementOptionsContainer.remove();
 
     //set player turn to true or false (random)
-    player.isTurn = [true,false][Math.floor(Math.random()*2)];
+    player.isTurn = [true, false][Math.floor(Math.random() * 2)];
   });
 
   placeShipsRandomlyOptionButton.addEventListener("click", () => {
@@ -384,8 +402,8 @@ function setShipsRandomly(player) {
 
         // console.log(shipsCoordianteRange[0].split("")[0], "startCoord letter");
         // console.log(
-          // shipsCoordianteRange[shipsCoordianteRange.length - 1].split("")[0],
-          // "endCoord letter"
+        // shipsCoordianteRange[shipsCoordianteRange.length - 1].split("")[0],
+        // "endCoord letter"
         // );
 
         if (
@@ -393,12 +411,12 @@ function setShipsRandomly(player) {
           shipsCoordianteRange[shipsCoordianteRange.length - 1].split("")[0]
         ) {
           // console.log(
-            // "start and end coord have the same letter and are on the same row placement is horizontal"
+          // "start and end coord have the same letter and are on the same row placement is horizontal"
           // );
           shipsOrientation = "horizontal";
         } else {
           // console.log(
-            // "start and end coord have different letter and are not on the same row ship placement must be vertical"
+          // "start and end coord have different letter and are not on the same row ship placement must be vertical"
           // );
           shipsOrientation = "vertical";
         }

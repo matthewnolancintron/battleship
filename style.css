@@ -74,6 +74,10 @@ body{
     text-align: center;
 }
 
+#gridOfHumansEnemysShips>.gridContainer>.gridCoordiante{
+    pointer-events: none;
+}
+
 #gridOfHumansShips>h1{
     height: 10px;
 
