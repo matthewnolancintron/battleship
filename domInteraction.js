@@ -87,7 +87,7 @@ function domInteractions(human, AI) {
           );
 
           if (attackResult == "miss") {
-            console.log('was miss');
+            console.log("was miss");
             /**
              * disable oppenets board to make unclickable
              */
@@ -99,12 +99,17 @@ function domInteractions(human, AI) {
                 element.style.pointerEvents = "none";
               });
 
-            
             // computerPlayer.isTurn = true;
 
             // end players turn
             player.isTurn = false;
 
+            // call turn loop
+            /**
+             * turn loop should trigger computers
+             * turn since humans turn is off now
+             */
+            this.playerTurnLoop();
           }
         });
       });
@@ -131,8 +136,50 @@ function domInteractions(human, AI) {
         });
       });
     },
+    playerReferences: { human: 0, computer: 0 },
+    playerTurnLoop() {
+      /**
+       * todo: before starting logic for turn loop
+       * use reportIfAllShipsSunk from the gameBoard
+       * module to check if the game has ended.
+       */
+
+      //turn loop logic below
+      if (this.playerReferences.human.isTurn) {
+        console.log("humans turn");
+        /**
+         * enable oppents board to listen for clicks
+         */
+        document
+          .querySelectorAll(
+            "#gridOfHumansEnemysShips>.gridContainer>.gridCoordiante"
+          )
+          .forEach((element) => {
+            element.style.pointerEvents = "auto";
+          });
+      } else {
+        this.playerReferences.computer.isTurn = true;
+      }
+
+      if (this.playerReferences.computer.isTurn) {
+        //do stuff
+        console.log("computers turn");
+
+        //todo do computer turn
+        console.log("computer made a move...");
+
+        //end turn
+        this.playerReferences.computer.isTurn = false;
+
+        //set human turn to true
+        this.playerReferences.human.isTurn = true;
+
+        // call turn loop
+        this.playerTurnLoop();
+      }
+    },
     placeShips() {},
-    
+
     /**
      * add event listners to gridOfEnemyShips
    * take user input for attacking

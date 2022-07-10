@@ -126,46 +126,16 @@ import domInteractions from "./domInteraction.js";
     let whenGameStarts = domInteractionObject.startGame();
 
     whenGameStarts.then(() => {
-      console.log("game can start here");
-      // start game with setting turn to either pc or human
-      //randomly
+      //give dom object reference to players
+      domInteractionObject.playerReferences.human = humanPlayer;
+      domInteractionObject.playerReferences.computer = computerPlayer;
+
+      //start turn loop
+      domInteractionObject.playerTurnLoop();
       
-
-      if (humanPlayer.isTurn) {
-        console.log("humans turn");
-        /**
-         * enable oppents board to listen for clicks
-         */
-         document.querySelectorAll(
-          "#gridOfHumansEnemysShips>.gridContainer>.gridCoordiante"
-        ).forEach((element)=>{
-          element.style.pointerEvents = 'auto'
-        });
-
-        // computerPlayer.isTurn = true;
-
-      } else {
-        computerPlayer.isTurn = true;
-      }
-
-      if (computerPlayer.isTurn) {
-        //do stuff
-        console.log("computers turn");
-
-        // todo computer turn loop
-        /**
-         * 
-         */
-
-        //end turn
-        computerPlayer.isTurn = false;
-      }
-
-
-      //when turn has ended set other start other players turn
-        
-
     });
+
+    
     /**
      * The game loop should step through
      * the game turn by turn using only
