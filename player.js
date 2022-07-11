@@ -1,7 +1,6 @@
 //for testing with jest
 //const gameBoard = require("./gameBoard");
 
-
 import gameBoard from "./gameBoard.js";
 
 function player(type) {
@@ -35,7 +34,7 @@ function player(type) {
          */
         toggleIsPlayersTurn() {
           this.isTurn = !this.isTurn;
-          return this.isTurn; 
+          return this.isTurn;
         },
 
         attackEnemyGameBoard(coordianteToAttack) {
@@ -50,15 +49,14 @@ function player(type) {
             /**
              * check if ship is at coord
              */
-            let infoAtCooridanteOfAttack = this.playersBoard.coordinatesOfEnemyShips[coordianteToAttack]; 
-            
-            console.log(infoAtCooridanteOfAttack)
-            if(infoAtCooridanteOfAttack == "unoccupied"){
-              return 'miss';
-            }
-            
+            let infoAtCooridanteOfAttack =
+              this.playersBoard.coordinatesOfEnemyShips[coordianteToAttack];
 
-            return coordianteToAttack;
+            if (infoAtCooridanteOfAttack == "unoccupied") {
+              return "miss";
+            } else {
+              return infoAtCooridanteOfAttack;
+            }
           } else {
             return "coordiante already attacked";
           }
@@ -89,24 +87,47 @@ function player(type) {
         },
 
         randomAttackOnEnemyGameBoard() {
-          let coordianteToAttack =   ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
-          .map((letter) =>
-            Array.from(Array(10).keys(), (x) => [
-              `${letter}${x + 1}`,
-              "unoccupied",
-            ])
-          )
-          .flat(1);
+          let coordianteToAttack = [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J",
+          ]
+            .map((letter) =>
+              Array.from(Array(10).keys(), (x) => [
+                `${letter}${x + 1}`,
+              ])
+            )
+            .flat(1);
 
-          coordianteToAttack = coordianteToAttack[Math.random()*(coordianteToAttack.length-1)];
+          coordianteToAttack = coordianteToAttack[Math.round(Math.random()*100)];
+
+          console.log(coordianteToAttack,'coordianteToAttack')
 
           if (!this.attackCoordinateLog.includes(coordianteToAttack)) {
             this.attackCoordinateLog.push(coordianteToAttack);
-            return coordianteToAttack;
-          } else {
-            return "coordiante already attacked";
-          }
 
+            /**
+             * check if ship is at coord
+             */
+            let infoAtCooridanteOfAttack =
+              this.playersBoard.coordinatesOfEnemyShips[coordianteToAttack];
+
+            if (infoAtCooridanteOfAttack == "unoccupied") {
+              return ["miss",coordianteToAttack];
+            } else {
+              return [infoAtCooridanteOfAttack,coordianteToAttack];
+            }
+
+          } else {
+            return ["coordiante already attacked",coordianteToAttack];
+          }
         },
       };
       break;

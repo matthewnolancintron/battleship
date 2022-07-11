@@ -187,19 +187,15 @@ size is equal to one grid unit
     background-color: aqua;
 }
 
-#AIsGameBoard{
-    background-color:aliceblue;
-    border:blue solid 1px;
-    
-    /* is a grid item of the gameBoardContainer */
-    grid-column: 1/3;
-   
+.attackedCoordiante{
+    background-color: rgba(255, 0, 0, 0.5);
+    z-index: 2;
+}
 
-    /* is a container for the following
-        gridOfAIsShips + gridOfAIEnemysShips
-     */
-     display: grid;
-     grid-template-columns: repeat(2,1fr);
+.sunkenShip{
+    border: 2px dotted red;
+    background-color: rgba(255, 0, 0, 0.7);
+    z-index: 2;
 }
 
 

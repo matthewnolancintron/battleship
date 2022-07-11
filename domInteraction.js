@@ -86,6 +86,7 @@ function domInteractions(human, AI) {
             element.dataset.coordiante
           );
 
+          //end turn on a miss
           if (attackResult == "miss") {
             console.log("was miss");
             /**
@@ -110,6 +111,38 @@ function domInteractions(human, AI) {
              * turn since humans turn is off now
              */
             this.playerTurnLoop();
+          } else {
+            if (attackResult != "coordiante already attacked") {
+              console.log(attackResult, "result!");
+              let shipBeingAttacked = attackResult[0];
+              let positionOfShipBeingAttacked = attackResult[1];
+
+              //call hit function on ship that was attacked, and pass in the postion that was hit.
+              let positions = shipBeingAttacked.hit(
+                positionOfShipBeingAttacked
+              );
+              console.log(positions);
+
+              //update cooridante attacked
+              element.classList.add("attackedCoordiante");
+
+              //use position to and isSunk method from ship object to check if ship has been sunk
+              //if ship has been sunk update dom to show it.
+              if (shipBeingAttacked.isSunk()) {
+                console.log(
+                  "ship has been sunken",
+                  shipBeingAttacked.placement
+                );
+                shipBeingAttacked.placement.forEach((coord) => {
+                  document
+                    .querySelector(
+                      `#gridOfHumansEnemysShips>.gridContainer>[data-coordiante=${coord}]`
+                    )
+                    .classList.add("sunkenShip");
+                });
+                //element.classList.add('sunkenShip');
+              }
+            }
           }
         });
       });
@@ -167,15 +200,71 @@ function domInteractions(human, AI) {
 
         //todo do computer turn
         console.log("computer made a move...");
+        /**
+         * todo: implement computers move
+         */
+        let randomAttackResult =
+          this.playerReferences.computer.randomAttackOnEnemyGameBoard();
+        console.log(randomAttackResult, "AI attacked!");
 
-        //end turn
-        this.playerReferences.computer.isTurn = false;
+        let attackResult = randomAttackResult[0];
+        let coordianteAttacked = randomAttackResult[1];
 
-        //set human turn to true
-        this.playerReferences.human.isTurn = true;
+        //end turn on a miss
+        if (attackResult == "miss" || attackResult == "coordiante already attacked") {
+          console.log("the AI missed... or hit the same spot");
 
-        // call turn loop
-        this.playerTurnLoop();
+          //end turn
+          this.playerReferences.computer.isTurn = false;
+
+          //set human turn to true
+          this.playerReferences.human.isTurn = true;
+
+          // call turn loop
+          /**
+           * turn loop should trigger computers
+           * turn since humans turn is off now
+           */
+          this.playerTurnLoop();
+        } else {
+          if (attackResult != "coordiante already attacked") {
+            console.log(attackResult, "result!");
+            let shipBeingAttacked = attackResult[0];
+            let positionOfShipBeingAttacked = attackResult[1];
+
+            //call hit function on ship that was attacked, and pass in the postion that was hit.
+            let positions = shipBeingAttacked.hit(positionOfShipBeingAttacked);
+            console.log(positions);
+
+            //update cooridante attacked
+            document
+              .querySelector(
+                `#gridOfHumansShips>.gridContainer>[data-coordiante=${coordianteAttacked}]`
+              )
+              .classList.add("attackedCoordiante");
+
+            console.log( document
+              .querySelector(
+                `#gridOfHumansShips>.gridContainer>[data-coordiante=${coordianteAttacked}]`
+              ),'?')
+
+            //use position to and isSunk method from ship object to check if ship has been sunk
+            //if ship has been sunk update dom to show it.
+            if (shipBeingAttacked.isSunk()) {
+              console.log("ship has been sunken", shipBeingAttacked.placement);
+              shipBeingAttacked.placement.forEach((coord) => {
+                document
+                  .querySelector(
+                    `#gridOfHumansShips>.gridContainer>[data-coordiante=${coord}]`
+                  )
+                  .classList.add("sunkenShip");
+              });
+            }
+
+            //call player turn loop again to repeat AI move until it misses
+            this.playerTurnLoop();
+          } 
+        }
       }
     },
     placeShips() {},

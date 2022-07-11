@@ -131,8 +131,7 @@ import domInteractions from "./domInteraction.js";
       domInteractionObject.playerReferences.computer = computerPlayer;
 
       //start turn loop
-      domInteractionObject.playerTurnLoop();
-      
+      domInteractionObject.playerTurnLoop(); 
     });
 
     
