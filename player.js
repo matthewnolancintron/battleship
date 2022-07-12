@@ -69,7 +69,24 @@ function player(type) {
         playersBoard: gameBoard(),
         isTurn: false,
         //contains coordiantes that the player already attacked
-        attackCoordinateLog: [],
+        poolOfPossibleAttack:[
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G",
+          "H",
+          "I",
+          "J",
+        ]
+          .map((letter) =>
+            Array.from(Array(10).keys(), (x) => [
+              `${letter}${x + 1}`,
+            ])
+          )
+          .flat(1),
 
         /**
          * The game is played against the computer,
@@ -87,47 +104,22 @@ function player(type) {
         },
 
         randomAttackOnEnemyGameBoard() {
-          let coordianteToAttack = [
-            "A",
-            "B",
-            "C",
-            "D",
-            "E",
-            "F",
-            "G",
-            "H",
-            "I",
-            "J",
-          ]
-            .map((letter) =>
-              Array.from(Array(10).keys(), (x) => [
-                `${letter}${x + 1}`,
-              ])
-            )
-            .flat(1);
+          console.log(this.poolOfPossibleAttack,' "before attack" available coordinate to atatck')
+          let randomIndexFromPool = Math.floor(Math.random()*this.poolOfPossibleAttack.length) 
+          let coordianteToAttack = this.poolOfPossibleAttack.splice(randomIndexFromPool,1)[0][0];
+          console.log(coordianteToAttack,'coordToAttack');
+          console.log(this.poolOfPossibleAttack,'available coordinate to atatck "after"')
+          /**
+          * check if ship is at coord
+          */
+          let infoAtCooridanteOfAttack =
+          this.playersBoard.coordinatesOfEnemyShips[coordianteToAttack];
 
-          coordianteToAttack = coordianteToAttack[Math.round(Math.random()*100)];
-
-          console.log(coordianteToAttack,'coordianteToAttack')
-
-          if (!this.attackCoordinateLog.includes(coordianteToAttack)) {
-            this.attackCoordinateLog.push(coordianteToAttack);
-
-            /**
-             * check if ship is at coord
-             */
-            let infoAtCooridanteOfAttack =
-              this.playersBoard.coordinatesOfEnemyShips[coordianteToAttack];
-
-            if (infoAtCooridanteOfAttack == "unoccupied") {
-              return ["miss",coordianteToAttack];
-            } else {
-              return [infoAtCooridanteOfAttack,coordianteToAttack];
-            }
-
+          if (infoAtCooridanteOfAttack == "unoccupied") {
+            return ["miss",coordianteToAttack];
           } else {
-            return ["coordiante already attacked",coordianteToAttack];
-          }
+            return [infoAtCooridanteOfAttack,coordianteToAttack];
+           }
         },
       };
       break;

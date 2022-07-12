@@ -88,7 +88,9 @@ function domInteractions(human, AI) {
 
           //end turn on a miss
           if (attackResult == "miss") {
-            console.log("was miss");
+            //display missed attack:
+            element.classList.add('miss')
+
             /**
              * disable oppenets board to make unclickable
              */
@@ -110,7 +112,9 @@ function domInteractions(human, AI) {
              * turn loop should trigger computers
              * turn since humans turn is off now
              */
-            this.playerTurnLoop();
+            setTimeout(()=>{
+              this.playerTurnLoop();
+            },1000);
           } else {
             if (attackResult != "coordiante already attacked") {
               console.log(attackResult, "result!");
@@ -177,6 +181,7 @@ function domInteractions(human, AI) {
        * module to check if the game has ended.
        */
 
+
       //turn loop logic below
       if (this.playerReferences.human.isTurn) {
         console.log("humans turn");
@@ -212,20 +217,36 @@ function domInteractions(human, AI) {
 
         //end turn on a miss
         if (attackResult == "miss" || attackResult == "coordiante already attacked") {
-          console.log("the AI missed... or hit the same spot");
+          
+          if(attackResult == "coordiante already attacked"){
+            //try again.
+            setTimeout(()=>{
+              this.playerTurnLoop();
+            },1000);
+          }
+          
+          //end turn on miss
+          if(attackResult=="miss"){
+            //display miss
+            document.querySelector(`#gridOfHumansShips>.gridContainer>[data-coordiante=${coordianteAttacked}]`).classList.add('miss');
+            
+            //end turn
+            this.playerReferences.computer.isTurn = false;
+  
+            //set human turn to true
+            this.playerReferences.human.isTurn = true;
+  
+            // call turn loop
+            /**
+             * turn loop should trigger computers
+             * turn since humans turn is off now
+             */
+             setTimeout(()=>{
+              this.playerTurnLoop();
+            },1000);  
+          }
+          
 
-          //end turn
-          this.playerReferences.computer.isTurn = false;
-
-          //set human turn to true
-          this.playerReferences.human.isTurn = true;
-
-          // call turn loop
-          /**
-           * turn loop should trigger computers
-           * turn since humans turn is off now
-           */
-          this.playerTurnLoop();
         } else {
           if (attackResult != "coordiante already attacked") {
             console.log(attackResult, "result!");
@@ -262,7 +283,10 @@ function domInteractions(human, AI) {
             }
 
             //call player turn loop again to repeat AI move until it misses
-            this.playerTurnLoop();
+            
+            setTimeout(()=>{
+              this.playerTurnLoop();
+            },1000);
           } 
         }
       }
@@ -411,16 +435,18 @@ function generateShipPlacementOptions(player) {
   shipPlacementOptionsContainer.classList.add("shipPlacementOptionsContainer");
 
   let shipPlacementMessage = document.createElement("p");
-  shipPlacementMessage.textContent = "How do you want to place your ships?";
+  shipPlacementMessage.textContent = "adjust your ship placements?";
   shipPlacementMessage.classList.add("shipPlacementMessage");
 
   let placeShipsRandomlyOptionButton = document.createElement("button");
   placeShipsRandomlyOptionButton.classList.add("randomPlacementOption");
   placeShipsRandomlyOptionButton.textContent = "randomise";
 
-  let placeShipsManualOptionButton = document.createElement("button");
-  placeShipsManualOptionButton.classList.add("manualPlacementOption");
-  placeShipsManualOptionButton.textContent = "manual";
+  //todo add manual ship placement option.
+
+  //let placeShipsManualOptionButton = document.createElement("button");
+  //placeShipsManualOptionButton.classList.add("manualPlacementOption");
+ // placeShipsManualOptionButton.textContent = "manual";
 
   let confirmPlacementButton = document.createElement("button");
   confirmPlacementButton.classList.add("confirmPlacementButton");
@@ -439,12 +465,12 @@ function generateShipPlacementOptions(player) {
   });
 
   // todo create manual ship placementEvent.
-  placeShipsManualOptionButton.addEventListener("click", () => {});
+ // placeShipsManualOptionButton.addEventListener("click", () => {});
 
   // add buttons to container
   shipPlacementOptionsContainer.append(shipPlacementMessage);
   shipPlacementOptionsContainer.append(placeShipsRandomlyOptionButton);
-  shipPlacementOptionsContainer.append(placeShipsManualOptionButton);
+  //shipPlacementOptionsContainer.append(placeShipsManualOptionButton);
   shipPlacementOptionsContainer.append(confirmPlacementButton);
 
   //return the container element

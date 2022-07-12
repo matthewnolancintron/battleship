@@ -190,12 +190,23 @@ size is equal to one grid unit
 .attackedCoordiante{
     background-color: rgba(255, 0, 0, 0.5);
     z-index: 2;
+    transition-property: background-color;
+    transition-timing-function:ease-in;
+    transition-duration: 250ms;
+}
+
+.miss::after{
+    content:'X';
+    z-index: 4;
 }
 
 .sunkenShip{
     border: 2px dotted red;
     background-color: rgba(255, 0, 0, 0.7);
     z-index: 2;
+    transition-property: background-color,border;
+    transition-timing-function:ease-in;
+    transition-duration: 250ms;
 }
 
 
