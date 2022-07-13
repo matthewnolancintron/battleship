@@ -1049,9 +1049,9 @@ function gameBoard() {
      */
     reportIfAllShipsSunk() {
       if (this.armada.every((x) => x.isSunk())) {
-        return "all ships in the armada have been sunk";
+        return ["all ships in the armada have been sunk",true];
       } else {
-        return "the armada has not been sunk";
+        return ["the armada has not been sunk",false];
       }
     },
   };

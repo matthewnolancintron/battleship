@@ -89,7 +89,7 @@ function domInteractions(human, AI) {
           //end turn on a miss
           if (attackResult == "miss") {
             //display missed attack:
-            element.classList.add('miss')
+            element.classList.add("miss");
 
             /**
              * disable oppenets board to make unclickable
@@ -112,9 +112,9 @@ function domInteractions(human, AI) {
              * turn loop should trigger computers
              * turn since humans turn is off now
              */
-            setTimeout(()=>{
+            setTimeout(() => {
               this.playerTurnLoop();
-            },1000);
+            }, 1000);
           } else {
             if (attackResult != "coordiante already attacked") {
               console.log(attackResult, "result!");
@@ -145,6 +145,14 @@ function domInteractions(human, AI) {
                     .classList.add("sunkenShip");
                 });
                 //element.classList.add('sunkenShip');
+
+                //check if all ships are sunk
+                if(this.playerReferences.computer.playersBoard.reportIfAllShipsSunk()[1] == true){
+                  //human won.
+                  this.displayWinner('human');
+                  return;
+                }
+
               }
             }
           }
@@ -180,24 +188,36 @@ function domInteractions(human, AI) {
        * use reportIfAllShipsSunk from the gameBoard
        * module to check if the game has ended.
        */
-
-
-      //turn loop logic below
-      if (this.playerReferences.human.isTurn) {
-        console.log("humans turn");
-        /**
-         * enable oppents board to listen for clicks
-         */
-        document
-          .querySelectorAll(
-            "#gridOfHumansEnemysShips>.gridContainer>.gridCoordiante"
-          )
-          .forEach((element) => {
-            element.style.pointerEvents = "auto";
-          });
-      } else {
-        this.playerReferences.computer.isTurn = true;
+      console.log(this.playerReferences.computer.playersBoard.reportIfAllShipsSunk()[1])
+      if(this.playerReferences.computer.playersBoard.reportIfAllShipsSunk()[1] == true){
+        //human won.
+        this.displayWinner('human');
+        return;
       }
+
+      if(this.playerReferences.human.playersBoard.reportIfAllShipsSunk()[1] == true){
+        //AI won.
+        //return 'AI wins';
+        this.displayWinner('AI');
+        return;
+      }
+
+        if (this.playerReferences.human.isTurn) {
+          //turn loop logic below
+          console.log("humans turn");
+          /**
+           * enable oppents board to listen for clicks
+           */
+          document
+            .querySelectorAll(
+              "#gridOfHumansEnemysShips>.gridContainer>.gridCoordiante"
+            )
+            .forEach((element) => {
+              element.style.pointerEvents = "auto";
+            });
+        } else {
+          this.playerReferences.computer.isTurn = true;
+        }
 
       if (this.playerReferences.computer.isTurn) {
         //do stuff
@@ -216,37 +236,28 @@ function domInteractions(human, AI) {
         let coordianteAttacked = randomAttackResult[1];
 
         //end turn on a miss
-        if (attackResult == "miss" || attackResult == "coordiante already attacked") {
-          
-          if(attackResult == "coordiante already attacked"){
-            //try again.
-            setTimeout(()=>{
-              this.playerTurnLoop();
-            },1000);
-          }
-          
-          //end turn on miss
-          if(attackResult=="miss"){
-            //display miss
-            document.querySelector(`#gridOfHumansShips>.gridContainer>[data-coordiante=${coordianteAttacked}]`).classList.add('miss');
-            
-            //end turn
-            this.playerReferences.computer.isTurn = false;
-  
-            //set human turn to true
-            this.playerReferences.human.isTurn = true;
-  
-            // call turn loop
-            /**
-             * turn loop should trigger computers
-             * turn since humans turn is off now
-             */
-             setTimeout(()=>{
-              this.playerTurnLoop();
-            },1000);  
-          }
-          
+        if (attackResult == "miss") {
+          //display miss
+          document
+            .querySelector(
+              `#gridOfHumansShips>.gridContainer>[data-coordiante=${coordianteAttacked}]`
+            )
+            .classList.add("miss");
 
+          //end turn
+          this.playerReferences.computer.isTurn = false;
+
+          //set human turn to true
+          this.playerReferences.human.isTurn = true;
+
+          // call turn loop
+          /**
+           * turn loop should trigger computers
+           * turn since humans turn is off now
+           */
+          setTimeout(() => {
+            this.playerTurnLoop();
+          }, 500);
         } else {
           if (attackResult != "coordiante already attacked") {
             console.log(attackResult, "result!");
@@ -264,10 +275,12 @@ function domInteractions(human, AI) {
               )
               .classList.add("attackedCoordiante");
 
-            console.log( document
-              .querySelector(
+            console.log(
+              document.querySelector(
                 `#gridOfHumansShips>.gridContainer>[data-coordiante=${coordianteAttacked}]`
-              ),'?')
+              ),
+              "?"
+            );
 
             //use position to and isSunk method from ship object to check if ship has been sunk
             //if ship has been sunk update dom to show it.
@@ -280,18 +293,32 @@ function domInteractions(human, AI) {
                   )
                   .classList.add("sunkenShip");
               });
+
+              //check if all of humans ships are sunk
+              if(this.playerReferences.human.playersBoard.reportIfAllShipsSunk()[1] == true){
+                //AI won.
+                //return 'AI wins';
+                this.displayWinner('AI');
+                return;
+              }
+
             }
 
             //call player turn loop again to repeat AI move until it misses
-            
-            setTimeout(()=>{
+
+            setTimeout(() => {
               this.playerTurnLoop();
-            },1000);
-          } 
+            }, 1000);
+          }
         }
       }
     },
     placeShips() {},
+    displayWinner(winner){
+      let winMessage = document.createElement('p');
+      winMessage.textContent = `${winner} wins!`
+      document.querySelector('#gameBoardContainer').append(winMessage);
+    }
 
     /**
      * add event listners to gridOfEnemyShips
@@ -446,7 +473,7 @@ function generateShipPlacementOptions(player) {
 
   //let placeShipsManualOptionButton = document.createElement("button");
   //placeShipsManualOptionButton.classList.add("manualPlacementOption");
- // placeShipsManualOptionButton.textContent = "manual";
+  // placeShipsManualOptionButton.textContent = "manual";
 
   let confirmPlacementButton = document.createElement("button");
   confirmPlacementButton.classList.add("confirmPlacementButton");
@@ -465,7 +492,7 @@ function generateShipPlacementOptions(player) {
   });
 
   // todo create manual ship placementEvent.
- // placeShipsManualOptionButton.addEventListener("click", () => {});
+  // placeShipsManualOptionButton.addEventListener("click", () => {});
 
   // add buttons to container
   shipPlacementOptionsContainer.append(shipPlacementMessage);
